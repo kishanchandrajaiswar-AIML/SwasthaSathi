@@ -1,0 +1,12 @@
+[
+  {
+    "id": "WS_NOT_DRINKING",
+    "text": {"en": "Not able to drink, or cannot keep fluids down."},
+    "verify": "VERIFY: ID taken from blueprint 9.2 example; wording is an engineer draft. Clinical review and Hindi/Marathi text pending."
+  },
+  {
+    "id": "WS_VERY_DROWSY",
+    "text": {"en": "Very sleepy, or hard to wake up."},
+    "verify": "VERIFY: ID taken from blueprint 9.2 example; wording is an engineer draft. Clinical review and Hindi/Marathi text pending."
+  }
+]

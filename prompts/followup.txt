@@ -1,0 +1,6 @@
+Given the extracted symptoms, write at most 5 short follow-up questions that help decide how urgent
+care is. Ask about duration, severity, ability to drink or eat, breathing, age group, pregnancy or
+known conditions ONLY if relevant. Do not ask for name, phone number or address.
+Write in {output_language}. Output JSON only:
+{"questions":[{"id":"q1","text":"","type":"yes_no|choice|text","options":[]}]}
+Do not include markdown code block formatting or explanations.

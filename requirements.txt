@@ -1,0 +1,7 @@
+streamlit==1.65.0
+pydantic==2.13.5
+groq==1.7.0
+python-dotenv==1.2.4
+pillow==12.3.0
+pytesseract==0.3.13
+pytest==9.1.1

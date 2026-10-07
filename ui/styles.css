@@ -1,0 +1,441 @@
+/* SwasthaSathi Minimalist Clinical Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Minimalist Palette: Light, Pristine & Focused */
+  --bg-app: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  --bg-muted: #E2E8F0;
+
+  /* Typography Colors */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-subtle: #94A3B8;
+
+  /* Functional Accents */
+  --primary-accent: #0284C7;
+  --primary-accent-hover: #0369A1;
+  --primary-accent-light: #E0F2FE;
+  --primary-accent-subtle: rgba(2, 132, 199, 0.08);
+
+  /* Clinical Severity Tones */
+  --emergency-red: #E11D48;
+  --emergency-bg: #FFF1F2;
+  --emergency-border: #FECDD3;
+
+  --warning-amber: #D97706;
+  --warning-bg: #FFFBEB;
+  --warning-border: #FDE68A;
+
+  --success-green: #059669;
+  --success-bg: #ECFDF5;
+  --success-border: #A7F3D0;
+
+  /* Borders & Shadows */
+  --border-subtle: #E2E8F0;
+  --border-hover: #CBD5E1;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-float: 0 14px 34px -4px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* Global App Container */
+html, body, .stApp {
+  font-family: var(--font-family) !important;
+  background-color: var(--bg-app) !important;
+  color: var(--text-primary) !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+.main .block-container {
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  padding-top: 1.25rem !important;
+  padding-bottom: 5.5rem !important;
+  padding-left: 1.25rem !important;
+  padding-right: 1.25rem !important;
+}
+
+/* Hide Streamlit default top and footer chrome */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Minimalist App Header */
+.ss-min-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0 1.25rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 1.25rem;
+}
+
+.ss-min-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.ss-min-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--text-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+
+.ss-min-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.ss-min-subtitle {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Minimalist Language Switcher Pills */
+.ss-lang-pill-container {
+  display: flex;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+  gap: 2px;
+}
+
+/* Minimalist Cards with Tactile 1px Edge */
+.ss-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ss-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1.5px);
+}
+
+/* Minimalist Telemetry & Vitals Grid */
+.ss-vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ss-vital-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.ss-vital-card:hover {
+  border-color: var(--primary-accent);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+}
+
+.ss-vital-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ss-vital-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.25rem 0 0.1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.ss-vital-meta {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Sparkline SVG Chart Container */
+.ss-sparkline-svg {
+  width: 100%;
+  height: 28px;
+  margin-top: 0.4rem;
+}
+
+/* Minimalist Range Comparator Bar (Lab Reports) */
+.ss-range-bar-wrapper {
+  margin: 0.75rem 0 0.25rem 0;
+}
+
+.ss-range-bar-track {
+  height: 6px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-pill);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.ss-range-bar-normal-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30%;
+  width: 45%;
+  background: #CBD5E1;
+  border-radius: var(--radius-pill);
+}
+
+.ss-range-bar-pointer {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.ss-range-bar-pointer.below {
+  background: var(--warning-amber);
+}
+
+.ss-range-bar-pointer.normal {
+  background: var(--success-green);
+}
+
+.ss-range-bar-pointer.above {
+  background: var(--emergency-red);
+}
+
+/* Minimalist Severity Badges */
+.ss-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.ss-badge-emergency {
+  background: var(--emergency-bg);
+  color: var(--emergency-red);
+  border-color: var(--emergency-border);
+}
+
+.ss-badge-phc-today {
+  background: var(--warning-bg);
+  color: var(--warning-amber);
+  border-color: var(--warning-border);
+}
+
+.ss-badge-phc-days {
+  background: #FEF3C7;
+  color: #B45309;
+  border-color: #FDE68A;
+}
+
+.ss-badge-home {
+  background: var(--success-bg);
+  color: var(--success-green);
+  border-color: var(--success-border);
+}
+
+/* Minimalist Emergency Card */
+.ss-emergency-banner {
+  background: var(--emergency-bg);
+  border: 1.5px solid var(--emergency-border);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.ss-emergency-title {
+  color: var(--emergency-red);
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.ss-emergency-subtitle {
+  color: #9F1239;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+/* Action Buttons */
+div.stButton > button {
+  min-height: 48px !important;
+  width: 100% !important;
+  font-size: 0.98rem !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-md) !important;
+  padding: 0.65rem 1.15rem !important;
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+div.stButton > button:hover {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border-hover) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-card) !important;
+  transform: translateY(-1px) !important;
+}
+
+div.stButton > button:active {
+  transform: scale(0.99) !important;
+}
+
+/* Primary Action Button */
+div.stButton > button[kind="primary"] {
+  background: var(--text-primary) !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--text-primary) !important;
+}
+
+div.stButton > button[kind="primary"]:hover {
+  background: #1E293B !important;
+  border-color: #1E293B !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Emergency Call Buttons */
+.ss-emergency-call-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 56px;
+  background: var(--emergency-red);
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 1px solid #BE123C;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.24);
+  transition: all 0.2s ease;
+}
+
+.ss-emergency-call-btn:hover {
+  background: #BE123C;
+  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Minimalist Clean Textarea */
+.stTextArea textarea {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  font-size: 0.98rem !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all 0.2s ease !important;
+}
+
+.stTextArea textarea:focus {
+  border-color: var(--primary-accent) !important;
+  box-shadow: 0 0 0 3px var(--primary-accent-light) !important;
+}
+
+/* Structured ASHA Summary Block */
+.ss-summary-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #1E293B;
+  box-shadow: var(--shadow-sm);
+  margin: 1rem 0;
+}
+
+/* Minimalist Audio Input */
+div[data-testid="stAudioInput"] {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 0.5rem !important;
+}
+
+/* Minimalist Floating Bottom Dock */
+.ss-dock-wrapper {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, calc(100vw - 32px));
+  height: 56px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: var(--shadow-float);
+  z-index: 9999;
+  padding: 0 0.5rem;
+}

@@ -1,0 +1,3 @@
+Translate the given text into {target_language} in simple, spoken style.
+Do not add, remove or change any meaning. Keep numbers, emergency numbers and names unchanged.
+Do not translate safety strings: those are already provided in {target_language}.

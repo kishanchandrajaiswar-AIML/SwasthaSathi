@@ -1,0 +1,31 @@
+# Secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Anonymous metrics are runtime output, never committed
+metrics.jsonl
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Node
+node_modules/
+
+# Test Screenshots
+screen_*.png
+ui_*.png
+modal_*.png
+view_*.png
+take_*.png
+current_*.png

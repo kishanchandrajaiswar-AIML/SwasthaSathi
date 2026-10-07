@@ -1,0 +1,103 @@
+[
+  {
+    "id": "demo_hero_child_fever",
+    "title": "Hindi: 3-Year-Old Child Fever (Hero Demo Journey)",
+    "language": "hi",
+    "input_text": "बच्चे को तीन दिन से बुखार है और वह खाना नहीं खा रहा, बहुत सुस्त है",
+    "follow_ups": [
+      {"id": "q1", "question": "बच्चे की उम्र क्या है?", "answer": "1-5 साल"},
+      {"id": "q2", "question": "क्या बच्चा पानी या दूध पी पा रहा है?", "answer": "बहुत कम"},
+      {"id": "q3", "question": "क्या बच्चे को उल्टी या सांस लेने में परेशानी है?", "answer": "नहीं"}
+    ],
+    "result": {
+      "risk_level": "VISIT_PHC",
+      "urgency_label": "TODAY",
+      "risk_source": "MERGED",
+      "llm_confidence": "HIGH",
+      "emergency": false,
+      "recommended_action": "कृपया बच्चे को आज ही नजदीकी प्राथमिक स्वास्थ्य केंद्र (PHC) या डॉक्टर के पास ले जाएं।",
+      "reasoning_summary": "3 साल के बच्चे में 3 दिन से लगातार बुखार और पानी/खाना कम लेना निर्जलीकरण का जोखिम हो सकता है।",
+      "first_aid_ids": ["FA_STAY_WITH_PERSON"],
+      "warning_signs_to_return": ["WS_NOT_DRINKING", "WS_VERY_DROWSY"]
+    }
+  },
+  {
+    "id": "demo_emergency_chest_pain",
+    "title": "Marathi: Chest Pain & Sweating (Wi-Fi Off Proof)",
+    "language": "mr",
+    "input_text": "माझ्या वडिलांना छातीत दुखतंय आणि खूप घाम येतोय",
+    "follow_ups": [],
+    "result": {
+      "risk_level": "EMERGENCY",
+      "urgency_label": null,
+      "risk_source": "RULES",
+      "llm_confidence": "HIGH",
+      "emergency": true,
+      "recommended_action": "तात्काळ ११२ किंवा १०८ वर कॉल करा किंवा नजीकच्या रुग्णालयात घेऊन जा.",
+      "reasoning_summary": "छातीत वेदना आणि घाम येणे हे हृदयविकाराचे गंभीर लक्षण असू शकते.",
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_signs_to_return": []
+    }
+  },
+  {
+    "id": "demo_mild_home_care",
+    "title": "English: Mild Runny Nose & Scratchy Throat",
+    "language": "en",
+    "input_text": "Mild runny nose and slight scratchy throat since yesterday, eating normally",
+    "follow_ups": [
+      {"id": "q1", "question": "Any difficulty breathing or chest pain?", "answer": "No"},
+      {"id": "q2", "question": "Are you able to drink fluids normally?", "answer": "Yes"}
+    ],
+    "result": {
+      "risk_level": "HOME_CARE",
+      "urgency_label": null,
+      "risk_source": "MERGED",
+      "llm_confidence": "HIGH",
+      "emergency": false,
+      "recommended_action": "Rest at home, drink plenty of clean warm fluids, and observe symptoms.",
+      "reasoning_summary": "Mild upper respiratory symptoms without red flags or breathing difficulty.",
+      "first_aid_ids": [],
+      "warning_signs_to_return": ["WS_BREATHING_FAST", "WS_VERY_DROWSY"]
+    }
+  },
+  {
+    "id": "demo_cbc_report",
+    "title": "Demo: Complete Blood Count (CBC) Lab Report",
+    "language": "en",
+    "report_text": "CLINICAL PATHOLOGY LABORATORY REPORT\nPatient: Anonymous (Age: 32 / Female)\n\nInvestigation: Complete Blood Count\nHemoglobin : 10.2 g/dL (Reference Range: 12.0 - 15.5)\nWBC Count : 7500 /cumm (Reference Range: 4000 - 11000)\nPlatelet Count : 210000 /cumm (Reference Range: 150000 - 450000)\nESR : 26 mm/hr\n",
+    "items": [
+      {
+        "test_name": "Hemoglobin",
+        "value": 10.2,
+        "unit": "g/dL",
+        "printed_range": "12.0 - 15.5",
+        "flag": "BELOW_PRINTED_RANGE",
+        "plain_explanation": "Hemoglobin is an iron-rich protein in red blood cells that carries oxygen throughout your body."
+      },
+      {
+        "test_name": "WBC Count",
+        "value": 7500,
+        "unit": "/cumm",
+        "printed_range": "4000 - 11000",
+        "flag": "NORMAL_PRINTED_RANGE",
+        "plain_explanation": "White blood cells (WBC) are cells of the immune system that help the body fight infections."
+      },
+      {
+        "test_name": "Platelet Count",
+        "value": 210000,
+        "unit": "/cumm",
+        "printed_range": "150000 - 450000",
+        "flag": "NORMAL_PRINTED_RANGE",
+        "plain_explanation": "Platelets are blood cell fragments that help the blood clot to stop bleeding."
+      },
+      {
+        "test_name": "ESR",
+        "value": 26,
+        "unit": "mm/hr",
+        "printed_range": null,
+        "flag": "RANGE_NOT_FOUND",
+        "plain_explanation": "Erythrocyte Sedimentation Rate (ESR) is a marker that reflects general inflammation in the body."
+      }
+    ]
+  }
+]

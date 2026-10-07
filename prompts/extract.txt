@@ -1,0 +1,5 @@
+Extract symptoms from the user text. Output JSON only:
+{"symptoms":[{"name":"","onset":"","severity_reported":"","notes":""}],
+ "patient_context":{"age_group":null,"pregnant":null,"known_conditions_mentioned":[]}}
+Use only information stated by the user. Use null if unknown. Do not infer conditions or diagnoses.
+The text may mix Hindi, Marathi and English. Output valid JSON only, no markdown wrapping.

@@ -1,0 +1,26 @@
+{
+  "name": "swasthasathi-web",
+  "version": "2.0.0",
+  "description": "SwasthaSathi - AI-Assisted Clinical Decision Support & Doctor Recommendation Platform",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.cjs",
+    "build": "node build.cjs",
+    "start": "node dev-server.cjs",
+    "test": "node --test test-smoke.cjs"
+  },
+  "keywords": [
+    "healthcare",
+    "ai",
+    "triage",
+    "doctor-recommendation",
+    "supabase",
+    "groq"
+  ],
+  "author": "SwasthaSathi Team",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1"
+  },
+  "devDependencies": {}
+}

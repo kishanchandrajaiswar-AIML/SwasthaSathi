@@ -1,0 +1,32 @@
+[
+  {
+    "id": "FA_CALL_112",
+    "text": {"en": "Call 112 or 108 or go to the nearest hospital now."},
+    "verify": "VERIFY: draft from blueprint 10.6; confirm emergency numbers for your state and review against official first-aid guidance. Hindi and Marathi text pending human review."
+  },
+  {
+    "id": "FA_STAY_WITH_PERSON",
+    "text": {"en": "Do not leave the person alone. Keep them calm and still."},
+    "verify": "VERIFY: draft from blueprint 10.6; review against official first-aid guidance. Hindi and Marathi text pending human review."
+  },
+  {
+    "id": "FA_BLEEDING_PRESSURE",
+    "text": {"en": "Press firmly on the wound with a clean cloth."},
+    "verify": "VERIFY: draft from blueprint 10.6; review against official first-aid guidance. Hindi and Marathi text pending human review."
+  },
+  {
+    "id": "FA_SEIZURE_SAFE",
+    "text": {"en": "Move hard objects away. Do not put anything in the mouth."},
+    "verify": "VERIFY: draft from blueprint 10.6; review against official first-aid guidance. Hindi and Marathi text pending human review."
+  },
+  {
+    "id": "FA_POISON_KEEP_CONTAINER",
+    "text": {"en": "Keep the packet or bottle to show the doctor."},
+    "verify": "VERIFY: draft from blueprint 10.6; review against official first-aid guidance. Hindi and Marathi text pending human review."
+  },
+  {
+    "id": "FA_NOTE_TIME",
+    "text": {"en": "Note the time the symptoms started."},
+    "verify": "VERIFY: draft from blueprint 10.6; review against official first-aid guidance. Hindi and Marathi text pending human review."
+  }
+]

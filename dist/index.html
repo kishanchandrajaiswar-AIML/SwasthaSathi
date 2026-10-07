@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="SwasthaSathi - Modern Clinical Health AI & Triage Assistant">
+  <title>SwasthaSathi | Modern Healthcare Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Critical fallback to prevent modals leaking before CSS parses */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+  <!-- Supabase Official JavaScript Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css?v=3.0">
+</head>
+<body class="desktop-mode">
+
+  <!-- Desktop Top Navigation Bar (Visible on tablets & desktop monitors) -->
+  <header class="desktop-navbar" id="desktopNavbar">
+    <div class="desktop-nav-brand">
+      <span class="desktop-brand-icon">🩺</span>
+      <div class="desktop-brand-text">
+        <span class="desktop-brand-title">SwasthaSathi</span>
+        <span class="desktop-brand-sub">AI Clinical Decision Support & Doctor Directory</span>
+      </div>
+    </div>
+
+    <nav class="desktop-nav-links">
+      <button class="desktop-nav-item active" data-view="home">🏠 Home</button>
+      <button class="desktop-nav-item" data-view="triage">🩺 Symptom Triage</button>
+      <button class="desktop-nav-item" data-view="facilities">🏥 Doctors & Clinics</button>
+      <button class="desktop-nav-item" data-view="records">📄 Lab Explainer</button>
+      <button class="desktop-nav-item" data-view="profile">👤 Profile & History</button>
+    </nav>
+
+    <div class="desktop-nav-actions">
+      <!-- Mode Toggle: Phone Simulation vs Full Desktop -->
+      <button class="btn-viewport-toggle" id="btnViewportToggle" title="Toggle between Desktop SaaS Dashboard and Phone Simulation">
+        <span id="viewportModeIcon">📱</span> <span id="viewportModeText">Phone View</span>
+      </button>
+
+      <!-- Desktop Language Selector -->
+      <div class="lang-pills desktop-lang-pills">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="hi">हि</button>
+        <button class="lang-btn" data-lang="mr">म</button>
+      </div>
+
+      <!-- Auth Action Button -->
+      <div class="desktop-auth-container" id="desktopAuthContainer">
+        <button class="btn-desktop-auth guest-state" id="btnDesktopAuth">
+          <span class="auth-status-dot"></span>
+          <span id="desktopAuthLabel">Guest Mode • Sign In</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Ambient Background Glows -->
+  <div class="ambient-glow glow-top"></div>
+  <div class="ambient-glow glow-bottom"></div>
+
+  <!-- Main Viewport / Responsive Container -->
+  <div class="device-wrapper">
+    <div class="phone-frame">
+      
+      <!-- Top Dynamic Island & Status Bar -->
+      <div class="status-bar">
+        <span class="status-time" id="liveClock">18:40</span>
+        <div class="dynamic-island">
+          <span class="island-camera"></span>
+        </div>
+        <div class="status-icons">
+          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4a1 1 0 001.41 1.41l1.79-.62C9.13 21.26 10.51 21.6 12 21.6c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16.6c-1.28 0-2.48-.32-3.53-.88l-.25-.13-2.61.9 1.15-2.52-.16-.27A7.54 7.54 0 014.4 12c0-4.19 3.41-7.6 7.6-7.6s7.6 3.41 7.6 7.6-3.41 7.6-7.6 7.6z"/></svg>
+          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.32c3.48 0 6.64 1.34 9.02 3.53L12 19.89 2.98 10.85C5.36 8.66 8.52 7.32 12 7.32z"/></svg>
+          <div class="battery-pill"><span class="battery-level"></span></div>
+        </div>
+      </div>
+
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="header-user-info">
+          <h1 class="app-logo-title" id="appHeaderTitle">SwasthaSathi</h1>
+          <p class="app-greeting" id="appGreeting">Hi, Sunita Tai</p>
+        </div>
+
+        <div class="header-actions">
+          <!-- Language Selector -->
+          <div class="lang-pills">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="hi">हि</button>
+            <button class="lang-btn" data-lang="mr">म</button>
+          </div>
+
+          <!-- Notification Bell -->
+          <button class="glass-icon-btn" id="notifBtn" aria-label="Notifications" title="Alerts & Status">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 01-3.46 0"></path>
+            </svg>
+            <span class="notif-dot"></span>
+          </button>
+
+          <!-- User Avatar -->
+          <div class="user-avatar-ring" id="userAvatarBtn" title="Switch User Profile">
+            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&auto=format&fit=crop&q=80" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%230284C7\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M4 20c0-4 4-6 8-6s8 2 8 6\'/></svg>'">
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Scrollable Screen Content -->
+      <div class="screen-scroll-container" id="screenScrollArea">
+
+        <!-- ===================================================================
+             VIEW 1: HOME (Clean, Genuine, Zero Random Fake Telemetry)
+             =================================================================== -->
+        <main id="view-home" class="app-view active">
+          
+          <!-- System Safety Badge (Patient-friendly) -->
+          <div class="status-ticker">
+            <span class="ticker-dot"></span>
+            <span id="tickerText">Emergency Red-Flag Protection Active • Offline Ready</span>
+          </div>
+
+          <!-- Guest Mode & Authentication Banner -->
+          <div class="guest-banner" id="guestModeBanner">
+            <div class="guest-banner-left">
+              <span class="guest-banner-pill">👋 Guest Mode Active</span>
+              <p class="guest-banner-text">Explore AI-assisted symptom triage & doctor directory without mandatory login. <button type="button" class="guest-banner-link" id="btnGuestBannerAuth">Sign In / Register</button> to persist your medical records with Supabase RLS.</p>
+            </div>
+          </div>
+
+          <!-- Clinical Decision Support Notice (Non-diagnosis disclaimer) -->
+          <div class="clinical-notice-pill">
+            <span class="notice-icon">ℹ️</span>
+            <span><b>Decision-Support Tool:</b> Informational doctor recommendation only. Consult qualified healthcare professionals.</span>
+          </div>
+
+          <!-- Section: Appointments & Consultations -->
+          <section class="home-section">
+            <div class="section-header">
+              <h2 class="section-title" id="appointmentsHeading">Doctor Consultations</h2>
+              <button class="section-link" id="viewAllAppointmentsBtn">See all PHCs</button>
+            </div>
+
+            <div class="appointments-carousel" id="appointmentsCarousel">
+              <!-- Dynamically populated or empty state -->
+              <div class="appointment-card glass-card" style="text-align: center; padding: 2rem;">
+                <p style="color: rgba(255,255,255,0.6);">No upcoming consultations scheduled.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section: Quick Healthcare Services (Replaces fake static statistics) -->
+          <section class="home-section">
+            <div class="section-header">
+              <h2 class="section-title" id="quickServicesHeading">Healthcare Services</h2>
+              <span class="stats-live-tag">Direct Access</span>
+            </div>
+
+            <div class="services-quick-grid">
+              
+              <!-- 1. Emergency Helpline 108 / 112 -->
+              <a href="tel:108" class="service-action-card glass-card emergency-glow">
+                <div class="service-card-top">
+                  <span class="service-icon-box red">🚨</span>
+                  <span class="service-pill red">24x7 Active</span>
+                </div>
+                <h3 class="service-card-title">Call Ambulance 108</h3>
+                <p class="service-card-desc">Emergency transport & casualty response</p>
+              </a>
+
+              <!-- 2. Symptom Triage -->
+              <div class="service-action-card glass-card" id="btnGoToTriage">
+                <div class="service-card-top">
+                  <span class="service-icon-box cyan">🩺</span>
+                  <span class="service-pill cyan">AI & Rules</span>
+                </div>
+                <h3 class="service-card-title">Symptom Triage</h3>
+                <p class="service-card-desc">Check symptoms with instant safety triage</p>
+              </div>
+
+              <!-- 3. Nearest Hospitals & Clinics -->
+              <div class="service-action-card glass-card" id="btnGoToFacilities">
+                <div class="service-card-top">
+                  <span class="service-icon-box green">🏥</span>
+                  <span class="service-pill green">GPS Sorted</span>
+                </div>
+                <h3 class="service-card-title">Nearest Clinics & PHC</h3>
+                <p class="service-card-desc">Locate care based on your live location</p>
+              </div>
+
+              <!-- 4. Lab Report Explainer -->
+              <div class="service-action-card glass-card" id="btnGoToReports">
+                <div class="service-card-top">
+                  <span class="service-icon-box amber">📄</span>
+                  <span class="service-pill amber">Zero Guessing</span>
+                </div>
+                <h3 class="service-card-title">Lab Test Explainer</h3>
+                <p class="service-card-desc">Compare test readings to printed ranges</p>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- Section: Patient Vitals Record (Genuine, user-controlled logging) -->
+          <section class="home-section">
+            <div class="section-header">
+              <h2 class="section-title" id="vitalsRecordHeading">Patient Vitals Record</h2>
+              <button class="section-link" id="btnOpenVitalsModal">+ Record Vitals</button>
+            </div>
+
+            <div class="vitals-real-grid">
+              <div class="vital-entry-card glass-card">
+                <span class="vital-entry-label">Body Temperature</span>
+                <div class="vital-entry-val"><span id="valTempDisplay">--</span> <span class="unit">°F</span></div>
+                <span class="vital-entry-status" id="valTempStatus">Not recorded yet</span>
+              </div>
+
+              <div class="vital-entry-card glass-card">
+                <span class="vital-entry-label">Blood Pressure</span>
+                <div class="vital-entry-val"><span id="valBPDisplay">--/--</span> <span class="unit">mmHg</span></div>
+                <span class="vital-entry-status" id="valBPStatus">Not recorded yet</span>
+              </div>
+
+              <div class="vital-entry-card glass-card">
+                <span class="vital-entry-label">Blood Sugar</span>
+                <div class="vital-entry-val"><span id="valSugarDisplay">--</span> <span class="unit">mg/dL</span></div>
+                <span class="vital-entry-status" id="valSugarStatus">Not recorded yet</span>
+              </div>
+
+              <div class="vital-entry-card glass-card">
+                <span class="vital-entry-label">Pulse / Heart Rate</span>
+                <div class="vital-entry-val"><span id="valHRDisplay">--</span> <span class="unit">bpm</span></div>
+                <span class="vital-entry-status" id="valHRStatus">Not recorded yet</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Floating Action Button: + Check Symptoms / Start Triage -->
+          <div class="floating-action-container">
+            <button class="pill-action-button" id="launchTriagePillBtn">
+              <span class="action-plus">+</span>
+              <span id="launchBtnText">Check Symptoms / New Triage</span>
+            </button>
+          </div>
+
+          <div style="height: 90px;"></div> <!-- Bottom spacer for dock -->
+        </main>
+
+
+        <!-- ===================================================================
+             VIEW 2: SYMPTOM TRIAGE (Cleaned subtitle, reliable voice input)
+             =================================================================== -->
+        <main id="view-triage" class="app-view">
+          
+          <div class="view-header">
+            <h2 class="view-title">Clinical Symptom Triage</h2>
+            <p class="view-subtitle">Interactive symptom check & immediate safety guidance</p>
+          </div>
+
+          <!-- Emergency Alert Banner (Appears when Red Flags are detected) -->
+          <div id="emergencyAlertBanner" class="emergency-glass-alert hidden">
+            <div class="emergency-icon-ring">🚨</div>
+            <div class="emergency-text-content">
+              <div class="critical-tag">CRITICAL RED FLAG</div>
+              <h3 class="emergency-title">Immediate Emergency Assistance Required</h3>
+              <p class="emergency-desc" id="emergencyRuleReason">Severe clinical distress detected. Zero network delay short-circuit.</p>
+              <div class="emergency-dial-row">
+                <a href="tel:112" class="btn-dial national">📞 Call 112 (National)</a>
+                <a href="tel:108" class="btn-dial ambulance">🚑 Call 108 (Ambulance)</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Triage Severity Meter -->
+          <div class="glass-card triage-meter-card">
+            <div class="meter-header">
+              <span class="meter-title">Triage Severity Spectrum</span>
+              <span class="meter-badge green" id="triageSpectrumBadge">HOME CARE</span>
+            </div>
+            
+            <div class="spectrum-track">
+              <div class="track-segment green"></div>
+              <div class="track-segment amber"></div>
+              <div class="track-segment red"></div>
+              <div class="spectrum-pin" id="spectrumPin" style="left: 16.6%;"></div>
+            </div>
+
+            <div class="spectrum-labels">
+              <span>Home Care</span>
+              <span>Visit PHC</span>
+              <span>Emergency</span>
+            </div>
+
+            <p class="spectrum-explanation" id="spectrumExplanation">
+              Mild baseline indicators. No immediate clinical red flags detected.
+            </p>
+          </div>
+
+          <!-- Input Panel -->
+          <div class="glass-card input-console-card">
+            <div class="input-card-header">
+              <label for="symptomTextArea" class="input-label">Describe Patient Symptoms:</label>
+              <!-- Voice Button with active feedback -->
+              <button class="voice-mic-btn" id="voiceMicBtn" title="Speak your symptoms">
+                <span class="mic-dot"></span>
+                <span id="voiceMicLabel">Tap to Speak</span>
+              </button>
+            </div>
+
+            <textarea id="symptomTextArea" class="symptom-textarea" placeholder="Type or speak symptoms (e.g., 3-year-old child with high fever for 3 days and not drinking water...)"></textarea>
+
+            <!-- Pre-Tested Hero Scenarios -->
+            <div class="scenarios-row">
+              <span class="scenarios-caption">Tested Cases:</span>
+              <button class="scenario-chip" data-text="बच्चे को तीन दिन से बुखार है और वह खाना नहीं खा रहा, बहुत सुस्त है">👶 Child Fever (3d)</button>
+              <button class="scenario-chip emergency-chip" data-text="सीने में बहुत तेज़ दर्द है और बहुत पसीना आ रहा है">🚨 Chest Pain & Sweat</button>
+              <button class="scenario-chip" data-text="Mild runny nose and slight scratchy throat since yesterday, eating normally">🤧 Mild Cold</button>
+            </div>
+
+            <div class="input-actions-row">
+              <button class="btn-glass-subtle" id="clearSymptomBtn">Clear</button>
+              <button class="btn-cyan-primary" id="evaluateSymptomBtn">
+                <span class="btn-loader-spinner hidden" id="triageSpinner"></span>
+                <span id="evaluateBtnLabel">Evaluate Safety →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Follow-Up Question Drawer -->
+          <div id="followupDrawer" class="glass-card followup-card hidden">
+            <div class="followup-step-indicator" id="followupStepIndicator">Step 1 of 3</div>
+            <p class="followup-question" id="followupQuestionText">Is the patient experiencing any difficulty breathing or chest tightness?</p>
+            <div class="followup-choices">
+              <button class="choice-btn" id="followupYesBtn">Yes</button>
+              <button class="choice-btn" id="followupNoBtn">No</button>
+            </div>
+          </div>
+
+          <!-- Real Triage Assessment Result Box -->
+          <div class="glass-card result-card" id="resultCardBox">
+            <div class="result-header">
+              <span class="result-title">Clinical Decision Support Assessment</span>
+              <span class="audit-source-tag" id="auditSourceTag">Source: DETERMINISTIC_VALIDATED</span>
+            </div>
+
+            <div class="recommendation-box" id="recActionBox">
+              <span class="rec-title">Recommended Clinical Next Step:</span>
+              <p class="rec-body" id="recActionBody">Enter symptoms above to run deterministic red-flag checks and structured triage.</p>
+            </div>
+
+            <!-- Warning Signs List -->
+            <div class="warning-section">
+              <span class="warning-heading">Warning Signs to Watch For:</span>
+              <ul class="warning-ul" id="warningSignsUl">
+                <li>• Inability to keep oral fluids down or dehydration</li>
+                <li>• Rapid or labored breathing (grunting, chest indrawing)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Recommended Doctor Match (AI-Assisted Decision Support) -->
+          <div class="glass-card recommended-doctor-card hidden" id="recommendedDoctorCard">
+            <div class="rec-doc-header">
+              <span class="badge-rec-doc">🎯 Recommended Specialist</span>
+              <span class="rec-doc-match" id="recDocMatchScore">98% Match</span>
+            </div>
+            <div class="doctor-profile">
+              <div class="doctor-avatar">
+                <img id="recDocAvatar" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&auto=format&fit=crop&q=80" alt="Doctor Avatar">
+              </div>
+              <div class="doctor-meta">
+                <h3 class="doctor-name" id="recDocName">Dr. Mark Lee</h3>
+                <p class="doctor-specialty" id="recDocSpecialty">Pediatrics & Child Health</p>
+                <p class="doctor-facility" id="recDocHospital">Wagholi Pediatric Clinic & PHC</p>
+              </div>
+            </div>
+            <p class="rec-doc-reason" id="recDocReason">Matched based on child febrile symptoms and need for clinical fluid intake evaluation.</p>
+            <div class="rec-doc-actions">
+              <a id="recDocCallBtn" href="tel:02027051122" class="btn-cyan-primary">📞 Contact Clinic</a>
+              <button type="button" id="btnSaveTriageRec" class="btn-glass-subtle">💾 Save to History</button>
+            </div>
+            <div id="saveRecToast" class="save-rec-toast hidden">✓ Saved to medical history (Supabase RLS)!</div>
+          </div>
+
+          <div style="height: 90px;"></div>
+        </main>
+
+
+        <!-- ===================================================================
+             VIEW 3: RECORDS & LAB EXPLAINER (Real Values & Reference Ranges)
+             =================================================================== -->
+        <main id="view-records" class="app-view">
+          
+          <div class="view-header">
+            <h2 class="view-title">Laboratory Report Explainer</h2>
+            <p class="view-subtitle">Values strictly compared against printed reference ranges on the document.</p>
+          </div>
+
+          <div class="disclaimer-banner-glass">
+            ⚠️ <b>Zero Hallucination Safety Guarantee:</b> Range comparator only evaluates numbers found explicitly on the report. Never assumes disease diagnosis.
+          </div>
+
+          <div class="lab-items-container" id="labItemsContainer">
+            
+            <!-- Item 1: Hemoglobin -->
+            <div class="glass-card lab-card">
+              <div class="lab-card-top">
+                <div>
+                  <h3 class="lab-test-name">Hemoglobin (Hb)</h3>
+                  <div class="lab-test-val">10.2 <span class="unit">g/dL</span></div>
+                </div>
+                <span class="lab-flag-chip below">Below Printed Range</span>
+              </div>
+              <div class="lab-track-wrapper">
+                <div class="lab-track">
+                  <div class="lab-normal-zone" style="left: 35%; width: 45%;"></div>
+                  <div class="lab-pin below" style="left: 20%;"></div>
+                </div>
+              </div>
+              <div class="lab-range-legend">
+                <span>0.0</span>
+                <span>Printed Normal: 12.0 - 15.5 g/dL</span>
+                <span>20.0</span>
+              </div>
+              <p class="lab-explanation">Hemoglobin is an iron-rich protein in red blood cells that carries oxygen throughout your body.</p>
+            </div>
+
+            <!-- Item 2: Platelet Count -->
+            <div class="glass-card lab-card">
+              <div class="lab-card-top">
+                <div>
+                  <h3 class="lab-test-name">Platelet Count</h3>
+                  <div class="lab-test-val">95,000 <span class="unit">/cumm</span></div>
+                </div>
+                <span class="lab-flag-chip below">Below Printed Range</span>
+              </div>
+              <div class="lab-track-wrapper">
+                <div class="lab-track">
+                  <div class="lab-normal-zone" style="left: 30%; width: 50%;"></div>
+                  <div class="lab-pin below" style="left: 18%;"></div>
+                </div>
+              </div>
+              <div class="lab-range-legend">
+                <span>0</span>
+                <span>Printed Normal: 1,50,000 - 4,50,000 /cumm</span>
+                <span>5,00,000</span>
+              </div>
+              <p class="lab-explanation">Platelets help the blood clot to prevent excessive bleeding. Value is below the printed reference interval.</p>
+            </div>
+
+            <!-- Item 3: Fasting Blood Sugar -->
+            <div class="glass-card lab-card">
+              <div class="lab-card-top">
+                <div>
+                  <h3 class="lab-test-name">Fasting Blood Glucose</h3>
+                  <div class="lab-test-val">138 <span class="unit">mg/dL</span></div>
+                </div>
+                <span class="lab-flag-chip above">Above Printed Range</span>
+              </div>
+              <div class="lab-track-wrapper">
+                <div class="lab-track">
+                  <div class="lab-normal-zone" style="left: 25%; width: 35%;"></div>
+                  <div class="lab-pin above" style="left: 72%;"></div>
+                </div>
+              </div>
+              <div class="lab-range-legend">
+                <span>50</span>
+                <span>Printed Normal: 70 - 100 mg/dL</span>
+                <span>200</span>
+              </div>
+              <p class="lab-explanation">Glucose is the main source of energy. Fasting level exceeds the laboratory reference boundary.</p>
+            </div>
+
+          </div>
+
+          <div style="height: 90px;"></div>
+        </main>
+
+
+        <!-- ===================================================================
+             VIEW 4: PHC & HOSPITAL DIRECTORY (Dynamic GPS & Nearest Clinics)
+             =================================================================== -->
+        <main id="view-facilities" class="app-view">
+          
+          <div class="view-header">
+            <h2 class="view-title">Healthcare Facilities Near You</h2>
+            <p class="view-subtitle">Clinics, PHCs, and Hospitals sorted by patient location</p>
+          </div>
+
+          <!-- Location Bar with Live Detection -->
+          <div class="glass-card location-bar-card">
+            <div class="location-top-row">
+              <div class="location-meta">
+                <span class="location-tag">Your Location</span>
+                <h3 class="location-current" id="currentLocationLabel">📍 Wagholi, Haveli (Pune)</h3>
+              </div>
+              <button class="btn-gps-detect" id="btnDetectGPS" title="Auto-detect using GPS">
+                <span class="gps-icon">🎯</span>
+                <span>GPS Locate</span>
+              </button>
+            </div>
+
+            <!-- Quick Locality Selector -->
+            <div class="locality-pills-row">
+              <button class="locality-pill active" data-name="Wagholi" data-lat="18.5793" data-lng="73.9806">Wagholi</button>
+              <button class="locality-pill" data-name="Lonikand" data-lat="18.6112" data-lng="74.0150">Lonikand</button>
+              <button class="locality-pill" data-name="Shikrapur" data-lat="18.7015" data-lng="74.1284">Shikrapur</button>
+              <button class="locality-pill" data-name="Hadapsar" data-lat="18.4984" data-lng="73.9312">Hadapsar</button>
+              <button class="locality-pill" data-name="Aundh" data-lat="18.5721" data-lng="73.8094">Aundh</button>
+              <button class="locality-pill" data-name="Shirur" data-lat="18.8286" data-lng="74.3756">Shirur</button>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="facility-type-filters">
+              <button class="fac-filter-btn active" data-type="ALL">All Nearby</button>
+              <button class="fac-filter-btn" data-type="CLINIC">🩺 Clinics</button>
+              <button class="fac-filter-btn" data-type="PHC">🏥 PHCs</button>
+              <button class="fac-filter-btn" data-type="CHC">🏨 CHC & Hospitals</button>
+              <button class="fac-filter-btn emergency-filter" data-type="EMERGENCY">🚨 24x7 Emergency</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Facilities List -->
+          <div class="facilities-list" id="facilitiesDynamicList">
+            <!-- Populated dynamically by JavaScript -->
+          </div>
+
+          <!-- Helplines Box -->
+          <div class="glass-card helplines-card">
+            <h4 class="helplines-title">Toll-Free Government Helplines</h4>
+            <div class="helplines-grid">
+              <div class="helpline-badge">🚑 <b>108</b> Ambulance</div>
+              <div class="helpline-badge">🚨 <b>112</b> Emergency</div>
+              <div class="helpline-badge">📞 <b>104</b> Health Advice</div>
+              <div class="helpline-badge">🧠 <b>14416</b> Tele-MANAS</div>
+            </div>
+          </div>
+
+          <div style="height: 90px;"></div>
+        </main>
+
+
+        <!-- ===================================================================
+             VIEW 5: PROFILE, SAVED RECOMMENDATIONS & MEDICAL RECORDS
+             =================================================================== -->
+        <main id="view-profile" class="app-view">
+          
+          <div class="view-header">
+            <h2 class="view-title">User Account & Clinical Records</h2>
+            <p class="view-subtitle">Supabase RLS Protected • Personal History & Handoff Memos</p>
+          </div>
+
+          <!-- User Identity Card -->
+          <div class="glass-card profile-user-card">
+            <div class="profile-card-top">
+              <div class="profile-avatar-large">
+                <span id="profileAvatarInitial">G</span>
+              </div>
+              <div class="profile-user-meta">
+                <h3 class="profile-user-name" id="profileUserName">Sunita Tai (Guest)</h3>
+                <p class="profile-user-email" id="profileUserEmail">guest@swasthasathi.org</p>
+                <span class="profile-badge-status" id="profileBadgeStatus">Guest Mode • Sandbox</span>
+              </div>
+            </div>
+
+            <div class="profile-stats-row">
+              <div class="pstat-item">
+                <span class="pstat-val" id="profileRecsCount">0</span>
+                <span class="pstat-lbl">Saved Triage</span>
+              </div>
+              <div class="pstat-item">
+                <span class="pstat-val" id="profileLocationTag">Pune</span>
+                <span class="pstat-lbl">Location</span>
+              </div>
+              <div class="pstat-item">
+                <span class="pstat-val">RLS</span>
+                <span class="pstat-lbl">Row Security</span>
+              </div>
+            </div>
+
+            <div class="profile-card-actions">
+              <button type="button" class="btn-cyan-primary btn-sm" id="btnProfileAuthAction">Sign In / Register</button>
+              <button type="button" class="btn-glass-subtle btn-sm hidden" id="btnProfileSignOut">Sign Out</button>
+            </div>
+          </div>
+
+          <!-- Saved Doctor Recommendations (Supabase RLS Protected) -->
+          <div class="profile-section-block">
+            <div class="section-header">
+              <h3 class="section-title">Saved Recommendations</h3>
+              <span class="stats-live-tag">Supabase RLS</span>
+            </div>
+            <div id="savedRecommendationsList" class="saved-recs-container">
+              <div class="empty-state-box">
+                <span class="empty-icon">📋</span>
+                <p class="empty-title">No saved recommendations yet</p>
+                <p class="empty-sub">Run an AI symptom triage to generate structured recommendations and save them to your account.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Doctor Consultation Preferences -->
+          <div class="glass-card doctor-preferences-card">
+            <div class="section-header">
+              <h3 class="section-title">Consultation Preferences</h3>
+              <button type="button" class="section-link" id="btnSavePreferences">Save</button>
+            </div>
+            <div class="pref-fields-grid">
+              <div class="pref-field">
+                <label for="prefSpecialty">Preferred Specialty:</label>
+                <select id="prefSpecialty" class="pref-select">
+                  <option value="General Physician">General Physician / Primary Care</option>
+                  <option value="Pediatrics">Pediatrics & Child Health</option>
+                  <option value="Cardiology">Cardiology & Internal Medicine</option>
+                  <option value="Family Medicine">Family Medicine & Diabetology</option>
+                </select>
+              </div>
+              <div class="pref-field">
+                <label for="prefLocation">Preferred Locality:</label>
+                <input type="text" id="prefLocation" class="pref-input" value="Wagholi / Haveli, Pune">
+              </div>
+              <div class="pref-field">
+                <label for="prefBudget">Budget Tier:</label>
+                <select id="prefBudget" class="pref-select">
+                  <option value="Free (Govt PHC/CHC)">Free (Govt PHC/CHC)</option>
+                  <option value="Under ₹300">Under ₹300 (Community Clinic)</option>
+                  <option value="Private / Any">Private / Any</option>
+                </select>
+              </div>
+            </div>
+            <div id="prefSaveToast" class="pref-toast hidden">✓ Preferences saved to Supabase (RLS)!</div>
+          </div>
+
+          <!-- ASHA Referral Summary Memo -->
+          <div class="profile-section-block">
+            <div class="section-header">
+              <h3 class="section-title">ASHA Clinical Referral Summary</h3>
+              <div class="summary-btn-group">
+                <button type="button" class="btn-copy-summary" id="copySummaryBtn">📋 Copy</button>
+                <button type="button" class="btn-share-whatsapp" id="shareWhatsappBtn">💬 WhatsApp</button>
+              </div>
+            </div>
+
+            <div class="glass-card summary-card">
+              <div class="summary-card-header">
+                <span class="summary-tag">Session ID: <code id="summarySessionId">swastha-92b1</code></span>
+              </div>
+
+              <div id="copyToast" class="copy-toast-banner hidden">
+                ✓ Referral summary copied to clipboard!
+              </div>
+
+              <pre class="summary-pre" id="summaryPreBlock">=== SWASTHASATHI HEALTHCARE REFERRAL SUMMARY ===
+Date & Time: 2026-10-07 18:40
+Session Language: ENGLISH
+Reported Symptoms: 3-year-old child with high fever for 3 days and poor fluid intake
+
+Key Follow-Up Answers:
+  • Drinking fluids: Very little
+  • Difficulty breathing: No
+  • Excessive lethargy: Mild
+
+Red Flags Detected: None
+Triage Risk Level: VISIT PHC (TODAY)
+Recommended Next Step: Take patient to the nearest Primary Health Centre (PHC) for in-person evaluation by a Medical Officer today.
+Warning Signs: WS_NOT_DRINKING, WS_VERY_DROWSY
+Audit Source: DETERMINISTIC_VALIDATED
+
+--------------------------------------------------
+NOTE: Decision-support guidance only. Does not replace professional clinical diagnosis.
+==================================================</pre>
+            </div>
+          </div>
+
+          <div style="height: 90px;"></div>
+        </main>
+
+      </div>
+
+      <!-- ===================================================================
+           FLOATING BOTTOM DOCK NAVIGATION
+           =================================================================== -->
+      <nav class="bottom-dock">
+        
+        <button class="dock-item active" data-view="home">
+          <div class="dock-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </div>
+          <span class="dock-label" id="dockLabelHome">Home</span>
+        </button>
+
+        <button class="dock-item" data-view="triage">
+          <div class="dock-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+            </svg>
+          </div>
+          <span class="dock-label" id="dockLabelTriage">Triage</span>
+        </button>
+
+        <button class="dock-item" data-view="records">
+          <div class="dock-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+              <path d="M14 2v6h6"></path>
+              <path d="M16 13H8"></path>
+              <path d="M16 17H8"></path>
+              <path d="M10 9H8"></path>
+            </svg>
+          </div>
+          <span class="dock-label" id="dockLabelRecords">Records</span>
+        </button>
+
+        <button class="dock-item" data-view="facilities">
+          <div class="dock-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <span class="dock-label" id="dockLabelPHCs">PHCs</span>
+        </button>
+
+        <button class="dock-item" data-view="profile">
+          <div class="dock-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <span class="dock-label" id="dockLabelProfile">Profile</span>
+        </button>
+
+      </nav>
+
+      <!-- ===================================================================
+           INTERACTIVE VOICE ASSISTANT MODAL / DRAWER
+           =================================================================== -->
+      <div id="voiceModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge">🎙️ Voice Assistant</span>
+            <button class="modal-close-btn" id="closeVoiceModalBtn">✕</button>
+          </div>
+
+          <div class="voice-wave-container">
+            <div class="pulsing-mic-ring" id="pulsingMicRing">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+              </svg>
+            </div>
+            <div class="voice-sound-bars" id="voiceSoundBars">
+              <span class="bar b1"></span>
+              <span class="bar b2"></span>
+              <span class="bar b3"></span>
+              <span class="bar b4"></span>
+              <span class="bar b5"></span>
+            </div>
+            <span class="recording-timer" id="recordingTimer">00:03</span>
+            <p class="voice-status-text" id="voiceStatusText">Listening... speak in Hindi, Marathi, or English</p>
+          </div>
+
+          <div class="voice-modal-actions">
+            <button class="btn-voice-stop" id="btnStopVoiceRecord">✓ Stop & Transcribe</button>
+          </div>
+
+          <!-- Quick voice complaints presets -->
+          <div class="voice-presets-box">
+            <span class="presets-title">Or Tap Quick Voice Scenario:</span>
+            <div class="voice-preset-chips">
+              <button class="preset-chip" data-phrase="बच्चे को तीन दिन से बहुत तेज बुखार है और वह पानी नहीं पी रहा">👶 बुखार 3 दिन (Hindi)</button>
+              <button class="preset-chip" data-phrase="सीने में बहुत तेज़ दर्द है और बहुत पसीना आ रहा है">🚨 छाती में दर्द (Emergency)</button>
+              <button class="preset-chip" data-phrase="मुलाला तीव्र ताप आहे आणि खूप उलटी होत आहे">🤒 ताप आणि उलटी (Marathi)</button>
+              <button class="preset-chip" data-phrase="Mild sore throat and slight cough since yesterday">🤧 Mild Cold (English)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           INTERACTIVE PATIENT VITALS LOGGING MODAL
+           =================================================================== -->
+      <div id="vitalsModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge">🩺 Record Patient Vitals</span>
+            <button class="modal-close-btn" id="closeVitalsModalBtn">✕</button>
+          </div>
+
+          <p class="modal-sub-info">Enter measurements taken using clinical thermometer or BP monitor.</p>
+
+          <form id="vitalsInputForm" class="vitals-form">
+            <div class="form-row">
+              <label for="inputBodyTemp">Body Temperature (°F):</label>
+              <input type="number" id="inputBodyTemp" step="0.1" placeholder="e.g. 98.6" min="90" max="110">
+            </div>
+
+            <div class="form-row">
+              <label for="inputBP">Blood Pressure (mmHg):</label>
+              <input type="text" id="inputBP" placeholder="e.g. 120/80">
+            </div>
+
+            <div class="form-row">
+              <label for="inputSugar">Blood Sugar (mg/dL):</label>
+              <input type="number" id="inputSugar" placeholder="e.g. 95" min="20" max="600">
+            </div>
+
+            <div class="form-row">
+              <label for="inputHeartRate">Heart Rate / Pulse (bpm):</label>
+              <input type="number" id="inputHeartRate" placeholder="e.g. 72" min="30" max="220">
+            </div>
+
+            <div class="form-btn-row">
+              <button type="button" class="btn-glass-subtle" id="cancelVitalsBtn">Cancel</button>
+              <button type="submit" class="btn-cyan-primary">Save Vitals</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           INTERACTIVE SUPABASE AUTH MODAL (Sign In, Sign Up, Cloud Config)
+           ================================================================== -->
+      <div id="authModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card auth-modal-card">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge" id="authModalTitle">🔐 Patient & Clinician Portal</span>
+            <button type="button" class="modal-close-btn" id="closeAuthModalBtn">✕</button>
+          </div>
+
+          <!-- Auth Mode Tabs -->
+          <div class="auth-tabs-row">
+            <button type="button" class="auth-tab-btn active" id="tabBtnSignIn">Sign In</button>
+            <button type="button" class="auth-tab-btn" id="tabBtnSignUp">Create Account</button>
+          </div>
+
+          <!-- Alert / Error message banner -->
+          <div id="authAlertBox" class="auth-alert-banner hidden"></div>
+
+          <!-- Form 1: Sign In -->
+          <form id="signInForm" class="auth-form-body">
+            <div class="form-row">
+              <label for="signInEmail">Email Address:</label>
+              <input type="email" id="signInEmail" placeholder="e.g. sunita@swasthasathi.org" required>
+            </div>
+            <div class="form-row">
+              <label for="signInPassword">Password:</label>
+              <input type="password" id="signInPassword" placeholder="••••••••" required>
+            </div>
+            <div class="form-btn-row">
+              <button type="submit" class="btn-cyan-primary btn-block" id="btnSubmitSignIn">
+                <span class="btn-loader-spinner hidden" id="authSignInSpinner"></span>
+                <span>Sign In with Supabase</span>
+              </button>
+            </div>
+            <div class="demo-auth-helper">
+              <button type="button" class="btn-demo-quick-login" id="btnDemoQuickLogin">
+                ⚡ 1-Click Demo Login (Judge Test)
+              </button>
+            </div>
+          </form>
+
+          <!-- Form 2: Sign Up -->
+          <form id="signUpForm" class="auth-form-body hidden">
+            <div class="form-row">
+              <label for="signUpName">Full Name:</label>
+              <input type="text" id="signUpName" placeholder="e.g. Dr. Rajesh Sharma or Sunita Tai" required>
+            </div>
+            <div class="form-row">
+              <label for="signUpEmail">Email Address:</label>
+              <input type="email" id="signUpEmail" placeholder="e.g. rajesh@swasthasathi.org" required>
+            </div>
+            <div class="form-row">
+              <label for="signUpPassword">Password (min 6 characters):</label>
+              <input type="password" id="signUpPassword" placeholder="••••••••" minlength="6" required>
+            </div>
+            <div class="form-btn-row">
+              <button type="submit" class="btn-cyan-primary btn-block" id="btnSubmitSignUp">
+                <span class="btn-loader-spinner hidden" id="authSignUpSpinner"></span>
+                <span>Create Account (Supabase Auth)</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Form 3 (Cloud Config removed) -->
+
+          <div class="auth-modal-footer">
+            <button type="button" class="btn-continue-guest-link" id="btnModalContinueGuest">
+              Continue as Guest (No Account Required)
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="supabaseClient.js?v=3.0"></script>
+  <script src="app.js?v=3.0"></script>
+</body>
+</html>

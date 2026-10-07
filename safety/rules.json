@@ -1,0 +1,609 @@
+{
+  "rules_version": "1.0.0",
+  "verify": "VERIFY: Draft emergency and triage rules for SwasthaSathi hackathon prototype. All triggers, tiers, and first-aid mappings must be clinically validated before production use.",
+  "vocab": {
+    "CHEST_PAIN": [
+      "chest pain",
+      "chest tightness",
+      "chest pressure",
+      "chest discomfort",
+      "pain in chest",
+      "heart pain",
+      "heart attack",
+      "seene me dard",
+      "seene mein dard",
+      "sine me dard",
+      "sine mein dard",
+      "sine me drd",
+      "chhati me dard",
+      "chhati mein dard",
+      "seene me jalan aur dard",
+      "सीने में दर्द",
+      "सीने में तेज दर्द",
+      "सीने में तेज़ दर्द",
+      "छातीत दुखणे",
+      "छातीत दुखतय",
+      "छातीत दुखतंय",
+      "छातीत वेदना",
+      "छातीत कळ"
+    ],
+    "SWEATING": [
+      "sweat",
+      "sweating",
+      "profuse sweating",
+      "cold sweat",
+      "pasina",
+      "paseena",
+      "pasina pasina",
+      "paseena aa raha",
+      "gham",
+      "gham yetoy",
+      "पसीना",
+      "पसीना आना",
+      "घाम",
+      "घाम येतोय"
+    ],
+    "BREATHING_DISTRESS": [
+      "cannot breathe",
+      "can not breathe",
+      "difficulty breathing",
+      "shortness of breath",
+      "struggling to breathe",
+      "gasping for air",
+      "breathless",
+      "breathlessness",
+      "suffocating",
+      "saans lene me dikkat",
+      "saans lene me takleef",
+      "saans lene mein dikkat",
+      "saans lene mein takleef",
+      "dam ghut raha",
+      "dum ghut raha",
+      "saas ful rahi",
+      "saas phool rahi",
+      "saans nahi aa rahi",
+      "साँस लेने में तकलीफ़",
+      "साँस लेने में तकलीफ",
+      "सांस लेने में दिक्कत",
+      "सांस फूल रही है",
+      "दम घुट रहा है",
+      "श्वास घेण्यास त्रास",
+      "श्वास गुदमरणे",
+      "दम भरून येणे"
+    ],
+    "STROKE_SIGNS": [
+      "face drooping",
+      "facial droop",
+      "arm weakness",
+      "slurred speech",
+      "speech slurred",
+      "unable to speak",
+      "lost speech",
+      "paralysis",
+      "paralysed",
+      "bolne me dikkat",
+      "bolne mein dikkat",
+      "bol nahi pa raha",
+      "ek taraf kamzori",
+      "lakwa",
+      "muh tedha",
+      "bolata yet nahi",
+      "bolnyas tras",
+      "लकवा",
+      "पक्षाघात",
+      "बोलने में दिक्कत",
+      "मुंह टेढ़ा",
+      "चेहरा वाकडा",
+      "बोलता येत नाही",
+      "हातापायातील ताकद गेली"
+    ],
+    "SEVERE_BLEEDING": [
+      "severe bleeding",
+      "uncontrolled bleeding",
+      "bleeding heavily",
+      "bleeding won't stop",
+      "soaking cloth",
+      "vomiting blood",
+      "khoon beh raha",
+      "bahut khoon nikal raha",
+      "khoon ki ulti",
+      "rakta vahane",
+      "khup rakt yetoy",
+      "रक्तस्राव",
+      "खून बह रहा है",
+      "खून की उल्टी",
+      "खूप रक्तस्त्राव",
+      "रक्त थांबत नाही"
+    ],
+    "UNCONSCIOUS": [
+      "unconscious",
+      "passed out",
+      "fainted",
+      "unresponsive",
+      "will not wake",
+      "cannot wake up",
+      "behosh",
+      "behosh ho gaya",
+      "sudh budh kho di",
+      "shuddh harapali",
+      "bebhann",
+      "beshuddh",
+      "बेहोश",
+      "बेहोशी",
+      "बेशुद्ध",
+      "बेशुध्द",
+      "जाग नहीं रहा",
+      "शुद्ध हरपली",
+      "अचेत"
+    ],
+    "SEIZURE": [
+      "seizure",
+      "convulsion",
+      "convulsions",
+      "fits",
+      "epileptic fit",
+      "daura",
+      "mirgi",
+      "mirgi ka daura",
+      "aanchke",
+      "jhatke",
+      "दौरा",
+      "मिरगी",
+      "झटके",
+      "आचके",
+      "फिट्स"
+    ],
+    "POISON": [
+      "poison",
+      "poisoning",
+      "pesticide",
+      "insecticide",
+      "swallowed pesticide",
+      "drank pesticide",
+      "kerosene",
+      "acid",
+      "overdose",
+      "swallowed chemical",
+      "keetnashak",
+      "keetnashak pi liya",
+      "kitnashak",
+      "zehar",
+      "vish",
+      "jehar",
+      "कीटनाशक",
+      "जहर",
+      "विष",
+      "विषबाधा",
+      "रासायनिक विष"
+    ],
+    "PREGNANCY_DISTRESS": [
+      "pregnant bleeding",
+      "pregnancy bleeding",
+      "bleeding during pregnancy",
+      "severe pregnancy pain",
+      "garbhwati khoon",
+      "garbhavastha me khoon",
+      "aathve mahine me khoon",
+      "aathve mahine mein khoon",
+      "garodar raktasrav",
+      "गर्भावस्था में रक्तस्राव",
+      "गर्भवती खून",
+      "आठवें महीने में खून",
+      "गरोदरपणात रक्तस्त्राव"
+    ],
+    "HEAD_INJURY": [
+      "head injury",
+      "head trauma",
+      "hit on head",
+      "fell on head",
+      "sir me chot",
+      "sar me chot",
+      "sir me chot lagi",
+      "doka futla",
+      "dokyala mar lagla",
+      "सिर में चोट",
+      "सर में चोट",
+      "डोक्याला मार लागला"
+    ],
+    "VOMITING": [
+      "vomit",
+      "vomiting",
+      "throwing up",
+      "ulti",
+      "ulti ho rahi",
+      "ulatya",
+      "vantee",
+      "उल्टी",
+      "उलटी",
+      "उलट्या",
+      "उलट्या होत आहेत",
+      "वांती"
+    ],
+    "SELF_HARM": [
+      "suicide",
+      "kill myself",
+      "want to die",
+      "end my life",
+      "jeene ka man nahi",
+      "jeene ka man nahi karta",
+      "marna chahta hu",
+      "marna chahti hu",
+      "atmahathya",
+      "aatmahatya",
+      "jagnyachi iccha nahi",
+      "जीने का मन नहीं करता",
+      "मरना चाहता हूँ",
+      "आत्महत्या",
+      "स्वतःला संपवणे"
+    ]
+  },
+  "rules": [
+    {
+      "id": "RF_CHEST_PAIN_SWEAT",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Chest pain combined with diaphoresis is a classic acute coronary syndrome presentation. Clinical review needed for thresholds.",
+      "description": "Chest pain, tightness, or pressure with sweating, breathlessness, or radiating pain.",
+      "triggers": [
+        ["@CHEST_PAIN", "@SWEATING"],
+        [
+          [
+            "chest pain and sweating",
+            "chest pain with sweating",
+            "seene me tez dard aur pasina",
+            "seene me dard aur pasina",
+            "seene me dard ho raha h pasina pasina",
+            "sine me dard aur pasina",
+            "chhati me dard aur gham",
+            "सीने में तेज़ दर्द हो रहा है और पसीना आ रहा है",
+            "सीने में दर्द और पसीना",
+            "छातीत दुखतंय आणि घाम येतोय",
+            "छातीत दुखतय आणि घाम येतोय"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_CHEST_PAIN_ACUTE",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": true,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Acute severe chest pain triage. Negation handling enabled for 'no chest pain'.",
+      "description": "Severe, crushing, or sudden acute chest pain.",
+      "triggers": [
+        [
+          [
+            "severe chest pain",
+            "crushing chest pain",
+            "heart attack",
+            "acute chest pain",
+            "seene me tez dard",
+            "seene me bahut tez dard",
+            "sine me tez dard",
+            "sine mein dar",
+            "सीने में तेज़ दर्द",
+            "छातीत तीव्र वेदना"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_BREATHING_SEVERE",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": true,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Severe respiratory distress red flag. Protocol aligned with emergency triage guidelines.",
+      "description": "Severe breathing difficulty, gasping, suffocating, unable to breathe.",
+      "triggers": [
+        ["@BREATHING_DISTRESS"]
+      ]
+    },
+    {
+      "id": "RF_STROKE_SIGNS",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_NOTE_TIME"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: FAST stroke signs triage. Requires recording time of onset.",
+      "description": "Stroke signs including sudden weakness, facial droop, or speech difficulty.",
+      "triggers": [
+        ["@STROKE_SIGNS"],
+        [
+          [
+            "mere pita ko chakkar aa raha hai aur bolne mein dikkat ho rahi hai",
+            "chakkar aa raha hai aur bolne mein dikkat",
+            "chakkar aur bolne me dikkat",
+            "bolne mein dikkat ho rahi hai"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_SEVERE_BLEEDING",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_BLEEDING_PRESSURE"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Major hemorrhage / uncontrolled bleeding first aid.",
+      "description": "Severe or uncontrolled bleeding, vomiting blood.",
+      "triggers": [
+        ["@SEVERE_BLEEDING"]
+      ]
+    },
+    {
+      "id": "RF_UNCONSCIOUS",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Loss of consciousness, unresponsiveness.",
+      "description": "Fainting, unresponsive state, unable to wake.",
+      "triggers": [
+        ["@UNCONSCIOUS"]
+      ]
+    },
+    {
+      "id": "RF_SEIZURE",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_SEIZURE_SAFE"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Active or first-time seizure protocol. Protect airway and head.",
+      "description": "Fits, convulsions, active seizure episode.",
+      "triggers": [
+        ["@SEIZURE"]
+      ]
+    },
+    {
+      "id": "RF_POISONING",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_POISON_KEEP_CONTAINER"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Toxic ingestion / pesticide / chemical poisoning protocol.",
+      "description": "Poisoning, pesticide ingestion, chemical ingestion, medication overdose.",
+      "triggers": [
+        ["@POISON"],
+        [
+          [
+            "bachche ne keetnashak pi liya hai",
+            "keetnashak pi liya",
+            "bache ne kitnashak pi liya",
+            "zehar kha liya"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_PREGNANCY_BLEEDING",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Antepartum bleeding / obstetric emergencies triage.",
+      "description": "Bleeding or severe pain during pregnancy (e.g. 3rd trimester).",
+      "triggers": [
+        ["@PREGNANCY_DISTRESS"],
+        [
+          [
+            "aathve mahine me khoon beh raha hai",
+            "aathve mahine mein khoon beh raha hai",
+            "आठवें महीने में खून बह रहा है",
+            "garbhavastha me khoon beh raha"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_HEAD_INJURY_VOMIT",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Traumatic brain injury with vomiting red flag.",
+      "description": "Head trauma or fall followed by vomiting or loss of consciousness.",
+      "triggers": [
+        ["@HEAD_INJURY", "@VOMITING"],
+        [
+          [
+            "dadi gir gayi aur sir me chot lagi ulti ho rahi hai",
+            "dadi gir gayi aur sir me chot lagi ulti",
+            "sir me chot lagi ulti ho rahi hai",
+            "दादी गिर गईं और सिर में चोट लगी, उल्टी हो रही है",
+            "दादी गिर गईं और सिर में चोट लगी उल्टी हो रही है",
+            "डोक्याला मार लागून उलट्या"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_ANAPHYLAXIS",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Anaphylaxis and severe acute allergic reaction.",
+      "description": "Swelling of lips, throat, or tongue with breathing difficulty after exposure.",
+      "triggers": [
+        [
+          [
+            "severe allergic reaction",
+            "throat swelling and cannot breathe",
+            "anaphylaxis",
+            "gale me sujan aur saans nahi aa rahi",
+            "चेहरा ओठ सुजले आणि श्वास घेता येत नाही"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "RF_SNAKEBITE",
+      "tier": "RF",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": ["FA_CALL_112", "FA_STAY_WITH_PERSON"],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Snakebite emergency protocol for rural India.",
+      "description": "Snakebite or suspected venomous bite.",
+      "triggers": [
+        [
+          [
+            "snake bite",
+            "snakebite",
+            "saanp ne kaata",
+            "saanp ne kaat liya",
+            "sanp ne kata",
+            "साँप ने काटा",
+            "सापाने चावले",
+            "सर्पदंश"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "HR_CHILD_PROLONGED_FEVER",
+      "tier": "HR",
+      "risk_floor": "VISIT_PHC",
+      "urgency": "TODAY",
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": [],
+      "warning_sign_ids": ["WS_NOT_DRINKING", "WS_VERY_DROWSY"],
+      "verify": "VERIFY: Pediatric prolonged fever with anorexia / poor intake.",
+      "description": "Fever for 3 or more days in child, or child not eating/drinking.",
+      "triggers": [
+        [
+          [
+            "bachche ko teen din se bukhar",
+            "bache ko 3 din se bukhar",
+            "child fever 3 days not eating",
+            "fever for three days and not eating",
+            "बच्चे को तीन दिन से बुखार है और वह खाना नहीं खा रहा",
+            "3 दिन से तेज बुखार",
+            "3 दिन से बुखार",
+            "मुलाला दोन दिवसांपासून ताप आणि खोकला आहे"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "HR_SEVERE_DEHYDRATION",
+      "tier": "HR",
+      "risk_floor": "VISIT_PHC",
+      "urgency": "TODAY",
+      "special_path": null,
+      "negatable": false,
+      "first_aid_ids": [],
+      "warning_sign_ids": ["WS_NOT_DRINKING", "WS_VERY_DROWSY"],
+      "verify": "VERIFY: Dehydration warning signs in diarrhea/vomiting.",
+      "description": "Diarrhea or vomiting with inability to keep fluids down or very low urine.",
+      "triggers": [
+        [
+          [
+            "severe dehydration",
+            "unable to drink any water",
+            "paani nahi pee pa raha",
+            "peshab nahi ho raha",
+            "पानी नहीं पी रहा",
+            "पानी नहीं पी पा रहा",
+            "pani pita yet nahi"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "HR_CHEST_PAIN_ISOLATED",
+      "tier": "HR",
+      "risk_floor": "VISIT_PHC",
+      "urgency": "TODAY",
+      "special_path": null,
+      "negatable": true,
+      "first_aid_ids": [],
+      "warning_sign_ids": ["WS_NOT_DRINKING", "WS_VERY_DROWSY"],
+      "verify": "VERIFY: Isolated chest pain without documented diaphoresis warrants same-day PHC clinician evaluation. Negatable when explicitly denied.",
+      "description": "Chest discomfort or pain without documented diaphoresis.",
+      "triggers": [
+        ["@CHEST_PAIN"]
+      ]
+    },
+    {
+      "id": "SP_SELF_HARM",
+      "tier": "SPECIAL",
+      "risk_floor": "EMERGENCY",
+      "urgency": null,
+      "special_path": "SELF_HARM",
+      "negatable": false,
+      "first_aid_ids": [],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Tele-MANAS 14416 / National Helpline 112 protocol. No triage card, supportive messaging only.",
+      "description": "Suicidal ideation, intent, or self-harm statements.",
+      "triggers": [
+        ["@SELF_HARM"]
+      ]
+    },
+    {
+      "id": "SP_MEDICATION_QUERY",
+      "tier": "SPECIAL",
+      "risk_floor": "VISIT_PHC",
+      "urgency": "TODAY",
+      "special_path": "MEDICATION_QUESTION",
+      "negatable": false,
+      "first_aid_ids": [],
+      "warning_sign_ids": [],
+      "verify": "VERIFY: Safe boundary handling for medication dosing inquiries.",
+      "description": "Questions asking for medication dosing, pill quantities, or prescription advice.",
+      "triggers": [
+        [
+          [
+            "how many sleeping pills",
+            "how many pills",
+            "paracetamol tablets",
+            "give my 2-year-old two paracetamol",
+            "kitni goli du",
+            "kitni dava lu",
+            "dosage of paracetamol"
+          ]
+        ]
+      ]
+    }
+  ]
+}

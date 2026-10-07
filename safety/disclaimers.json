@@ -1,0 +1,17 @@
+[
+  {
+    "id": "DISC_STANDARD",
+    "text": {"en": "SwasthaSathi gives general guidance to help you decide the next step. It does not diagnose illness or replace a doctor. If you are worried, please see a health worker or doctor."},
+    "verify": "VERIFY: blueprint 10.4 text; Hindi and Marathi translations need native-speaker review."
+  },
+  {
+    "id": "DISC_EMERGENCY",
+    "text": {"en": "This may be an emergency. Call 112 or 108 now or go to the nearest hospital. Do not wait for more information from this app."},
+    "verify": "VERIFY: blueprint 10.4 text; Hindi and Marathi translations need native-speaker review."
+  },
+  {
+    "id": "DISC_UNCERTAINTY",
+    "text": {"en": "I cannot be sure from what you told me. Because of that, please see a doctor or the nearest PHC."},
+    "verify": "VERIFY: blueprint 10.4 text; Hindi and Marathi translations need native-speaker review."
+  }
+]
