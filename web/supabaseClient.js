@@ -49,6 +49,11 @@
       }
     }
 
+    // Strip out /rest/v1 or trailing slashes if user pasted the wrong endpoint
+    if (url) {
+      url = url.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
+    }
+
     if (url && key && window.supabase && typeof window.supabase.createClient === 'function') {
       try {
         client = window.supabase.createClient(url, key, {

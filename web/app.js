@@ -615,14 +615,9 @@
             voiceModal.classList.add('hidden');
             runTriageSafetyCheck();
           } else {
-            // Default sample if empty audio
-            symptomTextArea.value = state.currentLang === 'hi'
-              ? 'बच्चे को 3 दिन से तेज बुखार है'
-              : state.currentLang === 'mr'
-              ? 'मुलाला तीव्र ताप आहे'
-              : 'Patient has high fever for 3 days';
+            alert('Could not transcribe audio. Please ensure GROQ_API_KEY is set correctly or speak louder.');
             voiceModal.classList.add('hidden');
-            runTriageSafetyCheck();
+            if (voiceStatusText) voiceStatusText.textContent = 'Listening...';
           }
         };
         reader.readAsDataURL(audioBlob);
@@ -1034,50 +1029,32 @@ NOTE: Decision-support guidance only. Does not replace professional clinical dia
   // 10. AI-Assisted Doctor Recommendation Matching
   function matchAndShowRecommendedDoctor(riskLevel, symptomText) {
     const textLower = (symptomText || '').toLowerCase();
-    const isPediatric = textLower.includes('child') || textLower.includes('बच्च') || textLower.includes('मुल') || textLower.includes('fever') || textLower.includes('बुखार') || textLower.includes('ताप');
-    const isCardiacEmergency = riskLevel === 'EMERGENCY' || textLower.includes('chest') || textLower.includes('सीने') || textLower.includes('दर्द') || textLower.includes('छातीत') || textLower.includes('breath');
-    const isFamilyChronic = textLower.includes('sugar') || textLower.includes('bp') || textLower.includes('diabetes') || textLower.includes('pressure') || textLower.includes('sugar');
+    const isPediatric = textLower.includes('child') || textLower.includes('बच्च') || textLower.includes('मुल') || textLower.includes('fever') || textLower.includes('बुखार');
+    const isCardiacEmergency = riskLevel === 'EMERGENCY' || textLower.includes('chest') || textLower.includes('सीने') || textLower.includes('दर्द') || textLower.includes('छातीत');
+
+    let nearestHospital = 'Nearest Primary Health Centre';
+    if (state.facilities && state.facilities.length > 0) {
+      nearestHospital = state.facilities[0].name;
+    }
 
     let doc = {
-      id: 'DOC_SHINDE',
-      name: 'Dr. R. K. Shinde (MBBS)',
-      specialty: 'General Physician & Family Medicine',
-      hospital: 'Wagholi Arogya Clinic & Dispensary',
-      phone: '020-27051122',
-      avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&auto=format&fit=crop&q=80',
-      reason: 'Recommended primary clinician for acute illness assessment, diagnostic workup, and localized OPD prescription.'
+      id: 'DOC_GENERIC',
+      name: 'Duty Medical Officer',
+      specialty: 'General Physician & Triage',
+      hospital: nearestHospital,
+      phone: '108',
+      avatar: 'https://images.unsplash.com/photo-1594824813583-0599a0e7f722?w=120&auto=format&fit=crop&q=80',
+      reason: 'Recommended primary clinician for acute illness assessment at your nearest facility.'
     };
 
     if (isCardiacEmergency) {
-      doc = {
-        id: 'DOC_ADAMS',
-        name: 'Dr. Sarah Adams',
-        specialty: 'Cardiology & Emergency Internal Medicine',
-        hospital: 'Haveli Community Health Centre (CHC)',
-        phone: '020-27051234',
-        avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&auto=format&fit=crop&q=80',
-        reason: 'Immediate clinical referral: Lead cardiologist with round-the-clock emergency casualty and trauma response.'
-      };
+      doc.specialty = 'Emergency Trauma Response';
+      doc.reason = 'Immediate clinical referral to the nearest emergency center.';
+      doc.avatar = 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&auto=format&fit=crop&q=80';
     } else if (isPediatric) {
-      doc = {
-        id: 'DOC_LEE',
-        name: 'Dr. Mark Lee',
-        specialty: 'Pediatrics & Neonatal Care',
-        hospital: 'Wagholi Pediatric Clinic & PHC',
-        phone: '020-27051122',
-        avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&auto=format&fit=crop&q=80',
-        reason: 'Specialist in child infectious disease, pediatric hydration protocols, and IMNCI guideline triage.'
-      };
-    } else if (isFamilyChronic) {
-      doc = {
-        id: 'DOC_JOSHI',
-        name: 'Dr. Anita Joshi (BAMS / CCEBDM)',
-        specialty: 'Family Medicine & Diabetology',
-        hospital: 'Sutarkar Community Health Clinic',
-        phone: '020-27054455',
-        avatar: 'https://images.unsplash.com/photo-1594824813583-0599a0e7f722?w=120&auto=format&fit=crop&q=80',
-        reason: 'Specialist in metabolic disease monitoring, blood pressure stabilization, and family medicine follow-ups.'
-      };
+      doc.specialty = 'Pediatric Care Officer';
+      doc.reason = 'Specialist evaluation for child symptoms according to IMNCI guidelines.';
+      doc.avatar = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&auto=format&fit=crop&q=80';
     }
 
     state.currentRecommendedDoctor = doc;
