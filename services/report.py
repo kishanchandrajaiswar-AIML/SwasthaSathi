@@ -83,9 +83,9 @@ def evaluate_printed_range(value: float, printed_range: Optional[str]) -> str:
 
 # Regex to scan lines in OCR text for common lab report formats:
 # Format e.g. "Hemoglobin: 10.2 g/dL (Reference Range: 12.0 - 15.5)"
-# or "WBC Count 8500 /cumm 4000-11000"
+# or "Platelet Count: 140,000 /cumm (Reference Range: 150,000 - 450,000)"
 LAB_LINE_REGEX = re.compile(
-    r"(?P<test>[A-Za-z\s]+?)\s*[:=\t]\s*(?P<val>\d+(?:\.\d+)?)\s*(?P<unit>[a-zA-Z/%μ]+)?\s*(?:[\(\[]?(?:ref|range|reference)?[:\s]*?(?P<range>\d+(?:\.\d+)?\s*[\-\–]\s*\d+(?:\.\d+)?))?",
+    r"(?P<test>[A-Za-z\s]+?)\s*[:=\t]\s*(?P<val>[\d,]+(?:\.\d+)?)\s*(?P<unit>[a-zA-Z/%μ]+)?\s*(?:[\(\[]?(?:ref|range|reference)?[:\s]*?(?P<range>[\d,]+(?:\.\d+)?\s*[\-\–]\s*[\d,]+(?:\.\d+)?))?",
     re.IGNORECASE,
 )
 
@@ -108,7 +108,7 @@ def extract_lab_items_from_text(raw_text: str) -> list[LabReportItem]:
             range_str = match.group("range")
             if not range_str:
                 after_val = line[match.end("val"):]
-                range_match = re.search(r"(\d+(?:\.\d+)?\s*[\-\–]\s*\d+(?:\.\d+)?)", after_val)
+                range_match = re.search(r"([\d,]+(?:\.\d+)?\s*[\-\–]\s*[\d,]+(?:\.\d+)?)", after_val)
                 if range_match:
                     range_str = range_match.group(1).strip()
 
@@ -116,7 +116,7 @@ def extract_lab_items_from_text(raw_text: str) -> list[LabReportItem]:
                 continue
 
             try:
-                val = float(val_str)
+                val = float(val_str.replace(",", ""))
                 flag = evaluate_printed_range(val, range_str)
                 explanation = VETTED_TEST_EXPLANATIONS.get(
                     test_name.lower(),

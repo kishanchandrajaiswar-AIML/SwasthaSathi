@@ -1,0 +1,68 @@
+{
+  "version": "2026.1",
+  "disclaimer": "This information is for clinical decision-support and educational guidance only. It does not constitute a definitive medical diagnosis or replace consultation with a licensed medical practitioner.",
+  "sources": [
+    {
+      "id": "SRC_MOHFW_IMNCI",
+      "title": "Integrated Management of Neonatal and Childhood Illness (IMNCI) Guidelines",
+      "authority": "Ministry of Health and Family Welfare (MoHFW), Govt. of India & WHO/UNICEF",
+      "url": "https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=1184&lid=364",
+      "review_date": "2026-01-15",
+      "key_recommendation": "Children under 5 years with high fever (>3 days), inability to drink or breastfeed, or lethargy must be assessed immediately at a Primary Health Centre (PHC) for dehydration and febrile infection management."
+    },
+    {
+      "id": "SRC_NVBDCP",
+      "title": "National Vector Borne Disease Control Programme - Clinical Management of Dengue and Malaria",
+      "authority": "Directorate General of Health Services, MoHFW, Govt. of India",
+      "url": "https://nvbdcp.gov.in/",
+      "review_date": "2025-11-20",
+      "key_recommendation": "Acute febrile illness with severe headache, retro-orbital pain, or joint pain during monsoon/post-monsoon requires NS1/IgM antigen and platelet monitoring at a registered laboratory. Never self-medicate with NSAIDs like ibuprofen/aspirin; consult a physician."
+    },
+    {
+      "id": "SRC_NHM_HYPERTENSION",
+      "title": "National Programme for Prevention & Control of Non-Communicable Diseases (NP-NCD)",
+      "authority": "National Health Mission (NHM), Govt. of India",
+      "url": "https://main.mohfw.gov.in/major-programmes/non-communicable-diseases-injury-trauma/np-ncd",
+      "review_date": "2026-02-10",
+      "key_recommendation": "Blood pressure persistently above 140/90 mmHg or fasting blood glucose above 126 mg/dL warrants baseline screening by a Medical Officer at an Arogya Mandir / PHC."
+    },
+    {
+      "id": "SRC_TELE_MANAS",
+      "title": "National Tele-Mental Health Programme (Tele-MANAS)",
+      "authority": "MoHFW & NIMHANS Bengaluru",
+      "url": "https://telemanas.mohfw.gov.in/",
+      "review_date": "2026-01-01",
+      "key_recommendation": "24x7 toll-free mental health psychosocial support available across India in multiple languages via 14416 or 1800-891-4416."
+    }
+  ],
+  "specialties": [
+    {
+      "code": "GEN_MED",
+      "name": "General Physician / Family Medicine",
+      "qualifications": "MBBS / MD / DNB / BAMS",
+      "scope": "First point of contact for acute fevers, respiratory infections, gastrointestinal distress, preventative health check-ups, and baseline chronic disease management.",
+      "when_to_visit": "Persistent cold, fever lasting more than 48 hours, body aches, digestive upset, or unexplained fatigue."
+    },
+    {
+      "code": "PEDIATRICS",
+      "name": "Pediatrics & Child Health",
+      "qualifications": "MD / DCH / DNB Pediatrics",
+      "scope": "Care for infants, young children, and adolescents under 16 years, covering immunization schedules, febrile seizures, developmental milestones, and IMNCI triage.",
+      "when_to_visit": "Infants under 3 months with fever, refusal to feed, grunting or rapid breathing, or lethargy in children."
+    },
+    {
+      "code": "CARDIOLOGY",
+      "name": "Cardiology & Emergency Internal Medicine",
+      "qualifications": "DM / DNB Cardiology, MD Emergency Medicine",
+      "scope": "Acute coronary syndromes, hypertension crises, arrhythmias, heart failure, and cardiovascular risk reduction.",
+      "when_to_visit": "Severe chest pain radiating to the left arm or jaw, sudden shortness of breath with cold sweat, palpitations, or syncope (call 108/112 immediately)."
+    },
+    {
+      "code": "MATERNAL",
+      "name": "Obstetrics & Maternal Health",
+      "qualifications": "MS / DGO / DNB OB-GYN",
+      "scope": "Antenatal care (ANC), delivery management, gestational diabetes, pre-eclampsia screening, and postpartum monitoring.",
+      "when_to_visit": "Pregnancy follow-ups, severe abdominal cramps during pregnancy, excessive swelling of feet, or high BP during gestation."
+    }
+  ]
+}

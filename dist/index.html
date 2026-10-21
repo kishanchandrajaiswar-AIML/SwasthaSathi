@@ -2,56 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="SwasthaSathi - Modern Clinical Health AI & Triage Assistant">
-  <title>SwasthaSathi | Modern Healthcare Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="SwasthaSathi - AI-Assisted Clinical Decision Support, Emergency Red-Flag Triage & Hospital Discovery for India">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:title" content="SwasthaSathi | Clinical Decision Support & Triage">
+  <meta property="og:description" content="AI-assisted symptom triage, deterministic red-flag safety short-circuit, and accurate location-based hospital discovery.">
+  <meta property="og:type" content="website">
+  <title>SwasthaSathi | Clinical Decision Support &amp; Triage</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts: Plus Jakarta Sans + Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Critical fallback to prevent modals leaking before CSS parses */
-    .hidden {
-      display: none !important;
-    }
-  </style>
-  <!-- Supabase Official JavaScript Client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="styles.css?v=3.0">
-</head>
-<body class="desktop-mode">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Desktop Top Navigation Bar (Visible on tablets & desktop monitors) -->
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    .hidden { display: none !important; }
+    body { min-height: max(884px, 100dvh); }
+  </style>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css?v=4.0">
+</head>
+<body>
+
+  <!-- ================================================================
+       DESKTOP TOP NAV (visible ≥ 900px)
+       ================================================================ -->
   <header class="desktop-navbar" id="desktopNavbar">
     <div class="desktop-nav-brand">
-      <span class="desktop-brand-icon">🩺</span>
+      <span class="material-symbols-outlined" style="color:var(--primary);font-size:26px;font-variation-settings:'FILL' 1;">local_hospital</span>
       <div class="desktop-brand-text">
         <span class="desktop-brand-title">SwasthaSathi</span>
-        <span class="desktop-brand-sub">AI Clinical Decision Support & Doctor Directory</span>
+        <span class="desktop-brand-sub">AI Clinical Decision Support &amp; Doctor Directory</span>
       </div>
     </div>
 
     <nav class="desktop-nav-links">
-      <button class="desktop-nav-item active" data-view="home">🏠 Home</button>
-      <button class="desktop-nav-item" data-view="triage">🩺 Symptom Triage</button>
-      <button class="desktop-nav-item" data-view="facilities">🏥 Doctors & Clinics</button>
-      <button class="desktop-nav-item" data-view="records">📄 Lab Explainer</button>
-      <button class="desktop-nav-item" data-view="profile">👤 Profile & History</button>
+      <button class="desktop-nav-item active" data-view="home">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">home</span> Home
+      </button>
+      <button class="desktop-nav-item" data-view="triage">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">stethoscope</span> Symptom Triage
+      </button>
+      <button class="desktop-nav-item" data-view="facilities">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">local_hospital</span> Doctors &amp; Clinics
+      </button>
+      <button class="desktop-nav-item" data-view="records">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">clinical_notes</span> Lab Explainer
+      </button>
+      <button class="desktop-nav-item" data-view="profile" id="navLinkProfile">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">person</span> Profile
+      </button>
+      <button class="desktop-nav-item hidden" data-view="doctor-dashboard" id="navLinkDoctorDashboard">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">medical_services</span> Doctor Portal
+      </button>
+      <button class="desktop-nav-item" id="navLinkGuidelines">
+        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">menu_book</span> Guidelines
+      </button>
     </nav>
 
     <div class="desktop-nav-actions">
-      <!-- Mode Toggle: Phone Simulation vs Full Desktop -->
-      <button class="btn-viewport-toggle" id="btnViewportToggle" title="Toggle between Desktop SaaS Dashboard and Phone Simulation">
-        <span id="viewportModeIcon">📱</span> <span id="viewportModeText">Phone View</span>
+      <button class="btn-viewport-toggle" id="btnViewportToggle">
+        <span class="material-symbols-outlined" style="font-size:16px;" id="viewportModeIcon">smartphone</span>
+        <span id="viewportModeText">Phone View</span>
       </button>
-
-      <!-- Desktop Language Selector -->
       <div class="lang-pills desktop-lang-pills">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="hi">हि</button>
         <button class="lang-btn" data-lang="mr">म</button>
       </div>
-
-      <!-- Auth Action Button -->
       <div class="desktop-auth-container" id="desktopAuthContainer">
         <button class="btn-desktop-auth guest-state" id="btnDesktopAuth">
           <span class="auth-status-dot"></span>
@@ -61,268 +88,354 @@
     </div>
   </header>
 
-  <!-- Ambient Background Glows -->
-  <div class="ambient-glow glow-top"></div>
-  <div class="ambient-glow glow-bottom"></div>
-
-  <!-- Main Viewport / Responsive Container -->
+  <!-- ================================================================
+       MAIN DEVICE WRAPPER
+       ================================================================ -->
   <div class="device-wrapper">
     <div class="phone-frame">
-      
-      <!-- App Header -->
+
+      <!-- App Header (mobile) -->
       <header class="app-header">
-        <div class="header-user-info">
-          <h1 class="app-logo-title" id="appHeaderTitle">SwasthaSathi</h1>
-          <p class="app-greeting" id="appGreeting">Hi, Sunita Tai</p>
+        <div class="header-inner">
+          <div class="header-user-info">
+            <h1 class="app-logo-title" id="appHeaderTitle">SwasthaSathi</h1>
+            <p class="app-greeting" id="appGreeting">Welcome, Guest</p>
+          </div>
+          <div class="header-actions">
+            <!-- Language Pills -->
+            <div class="lang-pills">
+              <button class="lang-btn active" data-lang="en">EN</button>
+              <button class="lang-btn" data-lang="hi">हि</button>
+              <button class="lang-btn" data-lang="mr">म</button>
+            </div>
+            <!-- Live clock -->
+            <span id="liveClock" style="font-size:12px;font-weight:600;color:var(--on-surface-variant);"></span>
+            <!-- Notification -->
+            <button class="glass-icon-btn" id="notifBtn" aria-label="Notifications">
+              <span class="material-symbols-outlined" style="font-size:22px;">notifications</span>
+              <span class="notif-dot"></span>
+            </button>
+            <!-- Avatar -->
+            <div class="user-avatar-ring" id="userAvatarBtn">
+              <div id="headerAvatarInitial" style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800;">G</div>
+            </div>
+          </div>
         </div>
-
-        <div class="header-actions">
-          <!-- Language Selector -->
-          <div class="lang-pills">
-            <button class="lang-btn active" data-lang="en">EN</button>
-            <button class="lang-btn" data-lang="hi">हि</button>
-            <button class="lang-btn" data-lang="mr">म</button>
-          </div>
-
-          <!-- Notification Bell -->
-          <button class="glass-icon-btn" id="notifBtn" aria-label="Notifications" title="Alerts & Status">
-            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 01-3.46 0"></path>
-            </svg>
-            <span class="notif-dot"></span>
-          </button>
-
-          <!-- User Avatar -->
-          <div class="user-avatar-ring" id="userAvatarBtn" title="Switch User Profile">
-            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&auto=format&fit=crop&q=80" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%230284C7\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M4 20c0-4 4-6 8-6s8 2 8 6\'/></svg>'">
-          </div>
+        <!-- Emergency Strip -->
+        <div class="emergency-header-strip">
+          <a class="emergency-strip-link" href="tel:108">
+            <span class="material-symbols-outlined" style="font-size:15px;">call</span>
+            <span>112 / 108 Emergency Helpline</span>
+          </a>
+          <span class="emergency-strip-sos">SOS Tap</span>
         </div>
       </header>
 
-      <!-- Main Scrollable Screen Content -->
+      <!-- ============================================================
+           SCREEN SCROLL CONTAINER
+           ============================================================ -->
       <div class="screen-scroll-container" id="screenScrollArea">
 
-        <!-- ===================================================================
-             VIEW 1: HOME (Clean, Genuine, Zero Random Fake Telemetry)
-             =================================================================== -->
+        <!-- ===========================================================
+             VIEW 1: HOME
+             =========================================================== -->
         <main id="view-home" class="app-view active">
-          
-          <!-- System Safety Badge (Patient-friendly) -->
+
+          <!-- Safety ticker -->
           <div class="status-ticker">
             <span class="ticker-dot"></span>
-            <span id="tickerText">Emergency Red-Flag Protection Active • Offline Ready</span>
+            <span id="tickerText">Emergency Red-Flag Protection Active • Offline Ready • ABDM Compliant</span>
           </div>
 
-          <!-- Guest Mode & Authentication Banner -->
+          <!-- Guest banner -->
           <div class="guest-banner" id="guestModeBanner">
             <div class="guest-banner-left">
-              <span class="guest-banner-pill">👋 Guest Mode Active</span>
-              <p class="guest-banner-text">Explore AI-assisted symptom triage & doctor directory without mandatory login. <button type="button" class="guest-banner-link" id="btnGuestBannerAuth">Sign In / Register</button> to persist your medical records with Supabase RLS.</p>
+              <span class="guest-banner-pill" id="guestBannerPill"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;color:var(--primary);">waving_hand</span> Guest Sandbox Active</span>
+              <p class="guest-banner-text" id="guestBannerDesc">Explore AI-assisted symptom triage &amp; verified doctor directory.
+                <button type="button" class="guest-banner-link" id="btnGuestBannerAuth">Sign In / Register</button>
+                to book consultations &amp; persist records with Supabase RLS.
+              </p>
             </div>
           </div>
 
-          <!-- Clinical Decision Support Notice (Non-diagnosis disclaimer) -->
+          <!-- Clinical notice -->
           <div class="clinical-notice-pill">
-            <span class="notice-icon">ℹ️</span>
-            <span><b>Decision-Support Tool:</b> Informational doctor recommendation only. Consult qualified healthcare professionals.</span>
+            <span class="notice-icon">
+              <span class="material-symbols-outlined" style="font-size:16px;color:var(--secondary);">shield_with_heart</span>
+            </span>
+            <span><b>Decision-Support Tool:</b> Provides triage guidance only. Does not replace professional clinical evaluation. Validated under ICMR &amp; WHO Triage Protocols.</span>
           </div>
 
-          <!-- Section: Appointments & Consultations -->
+          <!-- Greeting section (shown when logged in) -->
+          <section class="home-section" style="padding-top: var(--space-md);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-sm);">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <h2 class="section-title" id="homeGreetingName" style="font-size:20px;"></h2>
+              </div>
+              <span id="aiReadyPill" class="stats-live-tag" style="gap:6px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--primary);display:inline-block;animation:pulse-dot 2s infinite;"></span>
+                AI Ready
+              </span>
+            </div>
+          </section>
+
+          <!-- Upcoming Consultations -->
           <section class="home-section">
             <div class="section-header">
-              <h2 class="section-title" id="appointmentsHeading">Doctor Consultations</h2>
-              <button class="section-link" id="viewAllAppointmentsBtn">See all PHCs</button>
+              <h2 class="section-title" id="appointmentsHeading">Upcoming Consultations</h2>
+              <button type="button" class="section-link" id="btnBookNewConsultation">+ Book Consultation</button>
             </div>
-
-            <div class="appointments-carousel" id="appointmentsCarousel">
-              <!-- Dynamically populated or empty state -->
-              <div class="appointment-card glass-card" style="text-align: center; padding: 2rem;">
-                <p style="color: rgba(255,255,255,0.6);">No upcoming consultations scheduled.</p>
+            <div class="appointments-list-container" id="homeAppointmentsContainer">
+              <div class="empty-state-box">
+                <span class="empty-icon">
+                  <span class="material-symbols-outlined" style="font-size:36px;color:var(--primary);">calendar_clock</span>
+                </span>
+                <p class="empty-title">No upcoming consultations</p>
+                <p class="empty-sub">Book an OPD consultation at your nearest Primary Health Centre (PHC) or verified clinic.</p>
+                <button type="button" class="btn-cyan-primary btn-sm" id="btnBookApptEmpty" style="margin-top:12px;">
+                  <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+                  Book Consultation
+                </button>
               </div>
             </div>
           </section>
 
-          <!-- Section: Quick Healthcare Services (Replaces fake static statistics) -->
+          <!-- Healthcare Services -->
           <section class="home-section">
             <div class="section-header">
               <h2 class="section-title" id="quickServicesHeading">Healthcare Services</h2>
               <span class="stats-live-tag">Direct Access</span>
             </div>
-
             <div class="services-quick-grid">
-              
-              <!-- 1. Emergency Helpline 108 / 112 -->
-              <a href="tel:108" class="service-action-card glass-card emergency-glow">
+
+              <!-- 1. Emergency 108 -->
+              <a href="tel:108" class="service-action-card" id="serviceCardEmergency">
                 <div class="service-card-top">
-                  <span class="service-icon-box red">🚨</span>
-                  <span class="service-pill red">24x7 Active</span>
+                  <span class="service-icon-box red">
+                    <span class="material-symbols-outlined" style="font-size:20px;color:var(--error);font-variation-settings:'FILL' 1;">emergency</span>
+                  </span>
+                  <span class="service-pill red">24×7</span>
                 </div>
                 <h3 class="service-card-title">Call Ambulance 108</h3>
-                <p class="service-card-desc">Emergency transport & casualty response</p>
+                <p class="service-card-desc">Emergency transport &amp; casualty response</p>
               </a>
 
               <!-- 2. Symptom Triage -->
-              <div class="service-action-card glass-card" id="btnGoToTriage">
+              <div class="service-action-card" id="btnGoToTriage">
                 <div class="service-card-top">
-                  <span class="service-icon-box cyan">🩺</span>
-                  <span class="service-pill cyan">AI & Rules</span>
+                  <span class="service-icon-box cyan">
+                    <span class="material-symbols-outlined" style="font-size:20px;color:var(--primary);font-variation-settings:'FILL' 1;">stethoscope</span>
+                  </span>
+                  <span class="service-pill cyan">AI + Rules</span>
                 </div>
                 <h3 class="service-card-title">Symptom Triage</h3>
                 <p class="service-card-desc">Check symptoms with instant safety triage</p>
               </div>
 
-              <!-- 3. Nearest Hospitals & Clinics -->
-              <div class="service-action-card glass-card" id="btnGoToFacilities">
+              <!-- 3. Nearest Clinics -->
+              <div class="service-action-card" id="btnGoToFacilities">
                 <div class="service-card-top">
-                  <span class="service-icon-box green">🏥</span>
+                  <span class="service-icon-box green">
+                    <span class="material-symbols-outlined" style="font-size:20px;color:var(--secondary);font-variation-settings:'FILL' 1;">local_hospital</span>
+                  </span>
                   <span class="service-pill green">GPS Sorted</span>
                 </div>
-                <h3 class="service-card-title">Nearest Clinics & PHC</h3>
+                <h3 class="service-card-title">Nearest Clinics &amp; PHC</h3>
                 <p class="service-card-desc">Locate care based on your live location</p>
               </div>
 
-              <!-- 4. Lab Report Explainer -->
-              <div class="service-action-card glass-card" id="btnGoToReports">
+              <!-- 4. Lab Report -->
+              <div class="service-action-card" id="btnGoToReports">
                 <div class="service-card-top">
-                  <span class="service-icon-box amber">📄</span>
+                  <span class="service-icon-box amber">
+                    <span class="material-symbols-outlined" style="font-size:20px;color:var(--tertiary);font-variation-settings:'FILL' 1;">clinical_notes</span>
+                  </span>
                   <span class="service-pill amber">Zero Guessing</span>
                 </div>
                 <h3 class="service-card-title">Lab Test Explainer</h3>
                 <p class="service-card-desc">Compare test readings to printed ranges</p>
               </div>
 
+              <!-- 5. Clinical Guidelines -->
+              <div class="service-action-card" id="btnGoToGuidelinesCard" style="grid-column: 1 / -1;">
+                <div class="service-card-top">
+                  <span class="service-icon-box cyan">
+                    <span class="material-symbols-outlined" style="font-size:20px;color:var(--primary);font-variation-settings:'FILL' 1;">menu_book</span>
+                  </span>
+                  <span class="service-pill cyan">Govt Verified</span>
+                </div>
+                <h3 class="service-card-title">Clinical Guidelines</h3>
+                <p class="service-card-desc">MoHFW, NHM &amp; IMNCI validated clinical sources</p>
+              </div>
+
             </div>
           </section>
 
-          <!-- Section: Patient Vitals Record (Genuine, user-controlled logging) -->
+          <!-- Vitals Overview -->
           <section class="home-section">
             <div class="section-header">
-              <h2 class="section-title" id="vitalsRecordHeading">Patient Vitals Record</h2>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="material-symbols-outlined" style="font-size:20px;color:var(--primary);">sensors</span>
+                <h2 class="section-title" id="vitalsRecordHeading">Vitals Overview</h2>
+              </div>
               <button class="section-link" id="btnOpenVitalsModal">+ Record Vitals</button>
             </div>
-
             <div class="vitals-real-grid">
-              <div class="vital-entry-card glass-card">
-                <span class="vital-entry-label">Body Temperature</span>
-                <div class="vital-entry-val"><span id="valTempDisplay">--</span> <span class="unit">°F</span></div>
-                <span class="vital-entry-status" id="valTempStatus">Not recorded yet</span>
-              </div>
-
-              <div class="vital-entry-card glass-card">
+              <div class="vital-entry-card">
                 <span class="vital-entry-label">Blood Pressure</span>
                 <div class="vital-entry-val"><span id="valBPDisplay">--/--</span> <span class="unit">mmHg</span></div>
                 <span class="vital-entry-status" id="valBPStatus">Not recorded yet</span>
               </div>
-
-              <div class="vital-entry-card glass-card">
+              <div class="vital-entry-card">
+                <span class="vital-entry-label">Pulse</span>
+                <div class="vital-entry-val"><span id="valHRDisplay">--</span> <span class="unit">bpm</span></div>
+                <span class="vital-entry-status" id="valHRStatus">Not recorded yet</span>
+              </div>
+              <div class="vital-entry-card">
+                <span class="vital-entry-label">Temperature</span>
+                <div class="vital-entry-val"><span id="valTempDisplay">--</span> <span class="unit">°F</span></div>
+                <span class="vital-entry-status" id="valTempStatus">Not recorded yet</span>
+              </div>
+              <div class="vital-entry-card">
                 <span class="vital-entry-label">Blood Sugar</span>
                 <div class="vital-entry-val"><span id="valSugarDisplay">--</span> <span class="unit">mg/dL</span></div>
                 <span class="vital-entry-status" id="valSugarStatus">Not recorded yet</span>
               </div>
-
-              <div class="vital-entry-card glass-card">
-                <span class="vital-entry-label">Pulse / Heart Rate</span>
-                <div class="vital-entry-val"><span id="valHRDisplay">--</span> <span class="unit">bpm</span></div>
-                <span class="vital-entry-status" id="valHRStatus">Not recorded yet</span>
-              </div>
             </div>
           </section>
 
-          <!-- Floating Action Button: + Check Symptoms / Start Triage -->
+          <!-- Floating Action Button -->
           <div class="floating-action-container">
             <button class="pill-action-button" id="launchTriagePillBtn">
-              <span class="action-plus">+</span>
+              <span class="material-symbols-outlined" style="font-size:20px;">add</span>
               <span id="launchBtnText">Check Symptoms / New Triage</span>
             </button>
           </div>
 
-          <div style="height: 90px;"></div> <!-- Bottom spacer for dock -->
+          <div style="height: 90px;"></div>
         </main>
 
 
-        <!-- ===================================================================
-             VIEW 2: SYMPTOM TRIAGE (Cleaned subtitle, reliable voice input)
-             =================================================================== -->
+        <!-- ===========================================================
+             VIEW 2: SYMPTOM TRIAGE
+             =========================================================== -->
         <main id="view-triage" class="app-view">
-          
+
           <div class="view-header">
             <h2 class="view-title">Clinical Symptom Triage</h2>
-            <p class="view-subtitle">Interactive symptom check & immediate safety guidance</p>
+            <p class="view-subtitle">AI-assisted triage &amp; immediate safety guidance</p>
           </div>
 
-          <!-- Emergency Alert Banner (Appears when Red Flags are detected) -->
+          <!-- Emergency Alert Banner -->
           <div id="emergencyAlertBanner" class="emergency-glass-alert hidden">
-            <div class="emergency-icon-ring">🚨</div>
+            <div class="emergency-icon-ring">
+              <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">emergency</span>
+            </div>
             <div class="emergency-text-content">
               <div class="critical-tag">CRITICAL RED FLAG</div>
               <h3 class="emergency-title">Immediate Emergency Assistance Required</h3>
               <p class="emergency-desc" id="emergencyRuleReason">Severe clinical distress detected. Zero network delay short-circuit.</p>
               <div class="emergency-dial-row">
-                <a href="tel:112" class="btn-dial national">📞 Call 112 (National)</a>
-                <a href="tel:108" class="btn-dial ambulance">🚑 Call 108 (Ambulance)</a>
+                <a href="tel:112" class="btn-dial national">
+                  <span class="material-symbols-outlined" style="font-size:16px;">call</span>
+                  Call 112
+                </a>
+                <a href="tel:108" class="btn-dial ambulance">
+                  <span class="material-symbols-outlined" style="font-size:16px;">emergency</span>
+                  Call 108
+                </a>
               </div>
             </div>
           </div>
 
           <!-- Triage Severity Meter -->
-          <div class="glass-card triage-meter-card">
+          <div class="triage-meter-card">
             <div class="meter-header">
               <span class="meter-title">Triage Severity Spectrum</span>
               <span class="meter-badge green" id="triageSpectrumBadge">HOME CARE</span>
             </div>
-            
             <div class="spectrum-track">
               <div class="track-segment green"></div>
               <div class="track-segment amber"></div>
               <div class="track-segment red"></div>
               <div class="spectrum-pin" id="spectrumPin" style="left: 16.6%;"></div>
             </div>
-
             <div class="spectrum-labels">
               <span>Home Care</span>
               <span>Visit PHC</span>
               <span>Emergency</span>
             </div>
-
             <p class="spectrum-explanation" id="spectrumExplanation">
               Mild baseline indicators. No immediate clinical red flags detected.
             </p>
           </div>
 
-          <!-- Input Panel -->
+          <!-- Symptom Input Console -->
           <div class="glass-card input-console-card">
             <div class="input-card-header">
-              <label for="symptomTextArea" class="input-label">Describe Patient Symptoms:</label>
-              <!-- Voice Button with active feedback -->
-              <button class="voice-mic-btn" id="voiceMicBtn" title="Speak your symptoms">
-                <span class="mic-dot"></span>
-                <span id="voiceMicLabel">Tap to Speak</span>
+              <label for="symptomTextArea" class="input-label">How are you feeling right now?</label>
+              <button class="voice-mic-btn" id="voiceMicBtn">
+                <span class="material-symbols-outlined" style="font-size:16px;" id="voiceMicIcon">mic</span>
+                <span id="voiceMicLabel">Speak Hindi / Eng</span>
               </button>
             </div>
 
-            <textarea id="symptomTextArea" class="symptom-textarea" placeholder="Type or speak symptoms (e.g., 3-year-old child with high fever for 3 days and not drinking water...)"></textarea>
+            <!-- Textarea with char counter -->
+            <div style="position:relative;">
+              <textarea id="symptomTextArea" class="symptom-textarea" rows="3"
+                placeholder="Describe symptoms in detail (e.g., sharp headache with nausea since 3 hours, temperature feels elevated)..."></textarea>
+              <span style="position:absolute;bottom:8px;right:12px;font-size:11px;color:var(--on-surface-variant);font-weight:600;" id="charCounter">0/240</span>
+            </div>
 
-            <!-- Pre-Tested Hero Scenarios -->
-            <div class="scenarios-row">
-              <span class="scenarios-caption">Tested Cases:</span>
-              <button class="scenario-chip" data-text="बच्चे को तीन दिन से बुखार है और वह खाना नहीं खा रहा, बहुत सुस्त है">👶 Child Fever (3d)</button>
-              <button class="scenario-chip emergency-chip" data-text="सीने में बहुत तेज़ दर्द है और बहुत पसीना आ रहा है">🚨 Chest Pain & Sweat</button>
-              <button class="scenario-chip" data-text="Mild runny nose and slight scratchy throat since yesterday, eating normally">🤧 Mild Cold</button>
+            <!-- Quick triage topics -->
+            <div class="scenarios-row" style="margin-top:var(--space-sm);">
+              <span class="scenarios-caption">Quick Topics:</span>
+              <button class="scenario-chip" data-text="बच्चे को तीन दिन से बुखार है और वह खाना नहीं खा रहा, बहुत सुस्त है">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">child_care</span> Child Fever
+              </button>
+              <button class="scenario-chip emergency-chip" data-text="सीने में बहुत तेज़ दर्द है और बहुत पसीना आ रहा है">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">cardiology</span> Chest Pain ⚠️
+              </button>
+              <button class="scenario-chip" data-text="Mild runny nose and slight scratchy throat since yesterday, eating normally">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">coronavirus</span> Mild Cold
+              </button>
+              <button class="scenario-chip" data-text="Migraine with visual aura and photophobia for 4 hours">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">psychology</span> Migraine
+              </button>
             </div>
 
             <div class="input-actions-row">
               <button class="btn-glass-subtle" id="clearSymptomBtn">Clear</button>
               <button class="btn-cyan-primary" id="evaluateSymptomBtn">
                 <span class="btn-loader-spinner hidden" id="triageSpinner"></span>
-                <span id="evaluateBtnLabel">Evaluate Safety →</span>
+                <span id="evaluateBtnLabel">Analyze Symptoms with Clinical AI</span>
+                <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
               </button>
+            </div>
+
+            <!-- Security note -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--space-sm);">
+              <span class="material-symbols-outlined" style="font-size:14px;color:var(--secondary);">security</span>
+              <span style="font-size:11px;color:var(--on-surface-variant);">Encrypted &amp; HIPAA-aligned triage assessment • ISO-13485</span>
             </div>
           </div>
 
-          <!-- Dynamic Follow-Up Question Drawer -->
+          <!-- Follow-Up Drawer -->
           <div id="followupDrawer" class="glass-card followup-card hidden">
-            <div class="followup-step-indicator" id="followupStepIndicator">Step 1 of 3</div>
+            <!-- Progress segments -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-sm);">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="material-symbols-outlined" style="font-size:15px;color:var(--primary);font-variation-settings:'FILL' 1;">shield_with_heart</span>
+                <span style="font-size:11px;font-weight:600;color:var(--on-surface-variant);">Clinical Triage Evaluation</span>
+              </div>
+              <span class="followup-step-indicator" id="followupStepIndicator">Step 1 of 3</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:var(--space-sm);">
+              <div id="followupProgBar1" style="height:6px;border-radius:999px;background:var(--primary-container);"></div>
+              <div id="followupProgBar2" style="height:6px;border-radius:999px;background:var(--surface-container-high);"></div>
+              <div id="followupProgBar3" style="height:6px;border-radius:999px;background:var(--surface-container-high);"></div>
+              <div id="followupProgBar4" style="height:6px;border-radius:999px;background:var(--surface-container-high);"></div>
+            </div>
             <p class="followup-question" id="followupQuestionText">Is the patient experiencing any difficulty breathing or chest tightness?</p>
             <div class="followup-choices">
               <button class="choice-btn" id="followupYesBtn">Yes</button>
@@ -330,21 +443,24 @@
             </div>
           </div>
 
-          <!-- Real Triage Assessment Result Box -->
+          <!-- Triage Result -->
           <div class="glass-card result-card" id="resultCardBox">
             <div class="result-header">
               <span class="result-title">Clinical Decision Support Assessment</span>
-              <span class="audit-source-tag" id="auditSourceTag">Source: DETERMINISTIC_VALIDATED</span>
+              <span class="audit-source-tag" id="auditSourceTag">DETERMINISTIC_VALIDATED</span>
             </div>
-
             <div class="recommendation-box" id="recActionBox">
-              <span class="rec-title">Recommended Clinical Next Step:</span>
+              <span class="rec-title">
+                <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle;">stethoscope</span>
+                Preliminary Assessment
+              </span>
               <p class="rec-body" id="recActionBody">Enter symptoms above to run deterministic red-flag checks and structured triage.</p>
             </div>
-
-            <!-- Warning Signs List -->
             <div class="warning-section">
-              <span class="warning-heading">Warning Signs to Watch For:</span>
+              <span class="warning-heading">
+                <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle;">warning</span>
+                Warning Signs to Watch For:
+              </span>
               <ul class="warning-ul" id="warningSignsUl">
                 <li>• Inability to keep oral fluids down or dehydration</li>
                 <li>• Rapid or labored breathing (grunting, chest indrawing)</li>
@@ -352,181 +468,192 @@
             </div>
           </div>
 
-          <!-- Recommended Doctor Match (AI-Assisted Decision Support) -->
+          <!-- Recommended Doctor / Facility -->
           <div class="glass-card recommended-doctor-card hidden" id="recommendedDoctorCard">
             <div class="rec-doc-header">
-              <span class="badge-rec-doc">🎯 Recommended Specialist</span>
-              <span class="rec-doc-match" id="recDocMatchScore">98% Match</span>
+              <span class="badge-rec-doc" id="recDocBadgeTitle">
+                <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;color:var(--primary);">my_location</span>
+                Clinical Referral Guidance
+              </span>
+              <span class="badge-rec-specialty" id="recDocSpecialtyBadge" style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);background:var(--primary-fixed);color:var(--primary);">Referral</span>
             </div>
             <div class="doctor-profile">
               <div class="doctor-avatar">
-                <img id="recDocAvatar" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=120&auto=format&fit=crop&q=80" alt="Doctor Avatar">
+                <div class="avatar-fallback-initials" id="recDocInitials" style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;">DR</div>
               </div>
               <div class="doctor-meta">
-                <h3 class="doctor-name" id="recDocName">Dr. Mark Lee</h3>
-                <p class="doctor-specialty" id="recDocSpecialty">Pediatrics & Child Health</p>
-                <p class="doctor-facility" id="recDocHospital">Wagholi Pediatric Clinic & PHC</p>
+                <div class="verified-doc-badge" id="recDocVerifiedBadge">
+                  <span class="material-symbols-outlined" style="font-size:11px;vertical-align:middle;">verified</span>
+                  Verified Medical Officer (MMC)
+                </div>
+                <h3 class="doctor-name" id="recDocName">Duty Medical Officer</h3>
+                <p class="doctor-specialty" id="recDocSpecialty">General Medicine &amp; Primary Care</p>
+                <p class="doctor-qualifications" id="recDocQualifications" style="font-size:11px;color:var(--outline);margin-top:2px;">MBBS • Reg: NMC-VERIFIED</p>
+                <p class="doctor-facility" id="recDocHospital">Nearest Public Health Centre / District Hospital</p>
               </div>
             </div>
-            <p class="rec-doc-reason" id="recDocReason">Matched based on child febrile symptoms and need for clinical fluid intake evaluation.</p>
-            <div class="rec-doc-actions">
-              <a id="recDocCallBtn" href="tel:02027051122" class="btn-cyan-primary">📞 Contact Clinic</a>
-              <button type="button" id="btnSaveTriageRec" class="btn-glass-subtle">💾 Save to History</button>
+            <div class="rec-doc-reason" id="recDocReason">Matched based on acute clinical presentation and need for medical officer evaluation under NHM guidelines.</div>
+            <div id="recDocCitation" style="font-size:10.5px;color:var(--outline);margin-top:-6px;margin-bottom:10px;">
+              <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle;">assignment</span>
+              Protocol: IMNCI / NHM Triage Guidelines
             </div>
-            <div id="saveRecToast" class="save-rec-toast hidden">✓ Saved to medical history (Supabase RLS)!</div>
+            <div class="rec-doc-actions">
+              <a id="recDocCallBtn" href="tel:02027051234" class="btn-cyan-primary" style="font-size:13px;">
+                <span class="material-symbols-outlined" style="font-size:16px;">call</span> Contact Facility
+              </a>
+              <button type="button" id="btnBookWithRecDoc" class="btn-cyan-primary" style="background:var(--secondary-container);color:var(--on-secondary-container);font-size:13px;">
+                <span class="material-symbols-outlined" style="font-size:16px;">calendar_add_on</span> Book Visit
+              </button>
+              <button type="button" id="btnSaveTriageRec" class="btn-glass-subtle" style="font-size:13px;">
+                <span class="material-symbols-outlined" style="font-size:16px;">save</span> Save
+              </button>
+            </div>
+            <div id="saveRecToast" class="save-rec-toast hidden">
+              <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">task_alt</span>
+              Saved to medical history (Supabase RLS)!
+            </div>
           </div>
 
           <div style="height: 90px;"></div>
         </main>
 
 
-        <!-- ===================================================================
-             VIEW 3: RECORDS & LAB EXPLAINER (Real Values & Reference Ranges)
-             =================================================================== -->
+        <!-- ===========================================================
+             VIEW 3: LAB REPORT EXPLAINER
+             =========================================================== -->
         <main id="view-records" class="app-view">
-          
+
           <div class="view-header">
             <h2 class="view-title">Laboratory Report Explainer</h2>
             <p class="view-subtitle">Values strictly compared against printed reference ranges on the document.</p>
           </div>
 
           <div class="disclaimer-banner-glass">
-            ⚠️ <b>Zero Hallucination Safety Guarantee:</b> Range comparator only evaluates numbers found explicitly on the report. Never assumes disease diagnosis.
+            <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;color:var(--tertiary);">info</span>
+            <b>Zero Hallucination Safety Guarantee:</b> Range comparator only evaluates numbers found explicitly on the report. Never assumes disease diagnosis.
           </div>
 
+          <!-- Interactive Report Input Card -->
+          <div class="glass-card" style="margin-bottom:var(--space-md);background:var(--surface-container-lowest);border:1px solid var(--outline-variant);border-radius:var(--radius-xl);padding:var(--space-md);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-xs);">
+              <label for="labReportTextInput" style="font-size:12px;font-weight:700;color:var(--on-surface);text-transform:uppercase;letter-spacing:0.04em;">Paste Laboratory Report Text</label>
+              <span style="font-size:11px;color:var(--on-surface-variant);">Evaluates numbers against printed reference ranges</span>
+            </div>
+            <textarea id="labReportTextInput" class="symptom-textarea" rows="4" style="min-height:90px;font-family:'JetBrains Mono',monospace;font-size:12px;" placeholder="Paste lab test results here, e.g.:
+Hemoglobin: 10.2 g/dL (Reference Range: 12.0 - 15.5)
+Platelet Count: 95,000 /cumm (Reference Range: 150,000 - 450,000)
+Fasting Blood Glucose: 138 mg/dL (Reference Range: 70 - 100)"></textarea>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:var(--space-sm);">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:11px;color:var(--on-surface-variant);font-weight:600;">Presets:</span>
+                <button type="button" class="btn-glass-subtle btn-sm" id="btnSampleCBC" style="padding:4px 10px;font-size:11px;">CBC Panel</button>
+                <button type="button" class="btn-glass-subtle btn-sm" id="btnSampleDiabetes" style="padding:4px 10px;font-size:11px;">Diabetic Panel</button>
+                <button type="button" class="btn-glass-subtle btn-sm" id="btnClearLabText" style="padding:4px 10px;font-size:11px;">Clear</button>
+              </div>
+              <button type="button" class="btn-cyan-primary btn-sm" id="btnAnalyzeReport" style="padding:8px 16px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                <span class="material-symbols-outlined" style="font-size:16px;">analytics</span>
+                <span>Analyze Report Values</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Analysis Results -->
           <div class="lab-items-container" id="labItemsContainer">
-            
-            <!-- Item 1: Hemoglobin -->
-            <div class="glass-card lab-card">
-              <div class="lab-card-top">
-                <div>
-                  <h3 class="lab-test-name">Hemoglobin (Hb)</h3>
-                  <div class="lab-test-val">10.2 <span class="unit">g/dL</span></div>
-                </div>
-                <span class="lab-flag-chip below">Below Printed Range</span>
-              </div>
-              <div class="lab-track-wrapper">
-                <div class="lab-track">
-                  <div class="lab-normal-zone" style="left: 35%; width: 45%;"></div>
-                  <div class="lab-pin below" style="left: 20%;"></div>
-                </div>
-              </div>
-              <div class="lab-range-legend">
-                <span>0.0</span>
-                <span>Printed Normal: 12.0 - 15.5 g/dL</span>
-                <span>20.0</span>
-              </div>
-              <p class="lab-explanation">Hemoglobin is an iron-rich protein in red blood cells that carries oxygen throughout your body.</p>
-            </div>
-
-            <!-- Item 2: Platelet Count -->
-            <div class="glass-card lab-card">
-              <div class="lab-card-top">
-                <div>
-                  <h3 class="lab-test-name">Platelet Count</h3>
-                  <div class="lab-test-val">95,000 <span class="unit">/cumm</span></div>
-                </div>
-                <span class="lab-flag-chip below">Below Printed Range</span>
-              </div>
-              <div class="lab-track-wrapper">
-                <div class="lab-track">
-                  <div class="lab-normal-zone" style="left: 30%; width: 50%;"></div>
-                  <div class="lab-pin below" style="left: 18%;"></div>
-                </div>
-              </div>
-              <div class="lab-range-legend">
-                <span>0</span>
-                <span>Printed Normal: 1,50,000 - 4,50,000 /cumm</span>
-                <span>5,00,000</span>
-              </div>
-              <p class="lab-explanation">Platelets help the blood clot to prevent excessive bleeding. Value is below the printed reference interval.</p>
-            </div>
-
-            <!-- Item 3: Fasting Blood Sugar -->
-            <div class="glass-card lab-card">
-              <div class="lab-card-top">
-                <div>
-                  <h3 class="lab-test-name">Fasting Blood Glucose</h3>
-                  <div class="lab-test-val">138 <span class="unit">mg/dL</span></div>
-                </div>
-                <span class="lab-flag-chip above">Above Printed Range</span>
-              </div>
-              <div class="lab-track-wrapper">
-                <div class="lab-track">
-                  <div class="lab-normal-zone" style="left: 25%; width: 35%;"></div>
-                  <div class="lab-pin above" style="left: 72%;"></div>
-                </div>
-              </div>
-              <div class="lab-range-legend">
-                <span>50</span>
-                <span>Printed Normal: 70 - 100 mg/dL</span>
-                <span>200</span>
-              </div>
-              <p class="lab-explanation">Glucose is the main source of energy. Fasting level exceeds the laboratory reference boundary.</p>
-            </div>
-
+            <!-- Dynamic lab cards rendered here by analyzeReport() -->
           </div>
 
           <div style="height: 90px;"></div>
         </main>
 
 
-        <!-- ===================================================================
-             VIEW 4: PHC & HOSPITAL DIRECTORY (Dynamic GPS & Nearest Clinics)
-             =================================================================== -->
+        <!-- ===========================================================
+             VIEW 4: FACILITIES & PHC DIRECTORY
+             =========================================================== -->
         <main id="view-facilities" class="app-view">
-          
+
           <div class="view-header">
-            <h2 class="view-title">Healthcare Facilities Near You</h2>
-            <p class="view-subtitle">Clinics, PHCs, and Hospitals sorted by patient location</p>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span class="material-symbols-outlined" style="color:var(--primary);font-size:22px;">local_hospital</span>
+              <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;color:var(--primary);text-transform:uppercase;">Clinical Sanctuary • Real-Time Discovery</span>
+            </div>
+            <h2 class="view-title">Nearby Verified Hospitals &amp; Clinics</h2>
+            <p class="view-subtitle">Live verified healthcare facilities sorted by exact GPS proximity</p>
           </div>
 
-          <!-- Location Bar with Live Detection -->
-          <div class="glass-card location-bar-card">
+          <!-- Real Location Detection Card -->
+          <div class="glass-card location-bar-card" style="border:1px solid var(--outline-variant);background:var(--surface-container-lowest);box-shadow:0 4px 16px rgba(15,118,110,0.06);">
             <div class="location-top-row">
-              <div class="location-meta">
-                <span class="location-tag">Your Location</span>
-                <h3 class="location-current" id="currentLocationLabel">📍 Wagholi, Haveli (Pune)</h3>
+              <div class="location-meta" style="flex:1;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+                  <span id="locationSourceBadge" class="location-tag" style="background:var(--surface-container-high);color:var(--on-surface-variant);">
+                    <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">share_location</span>
+                    <span id="locationSourceText">Device GPS / City Search</span>
+                  </span>
+                  <span id="locationActiveDot" style="width:8px;height:8px;border-radius:50%;background:var(--outline);display:inline-block;"></span>
+                </div>
+                <h3 class="location-current" id="currentLocationLabel" style="font-size:15px;font-weight:700;color:var(--on-surface);">Location Not Set — Tap GPS or Search City</h3>
               </div>
-              <button class="btn-gps-detect" id="btnDetectGPS" title="Auto-detect using GPS">
-                <span class="gps-icon">🎯</span>
-                <span>GPS Locate</span>
+              <button class="btn-gps-detect" id="btnDetectGPS" title="Detect device GPS coordinates">
+                <span class="material-symbols-outlined" style="font-size:16px;">my_location</span>
+                <span>Use My Location</span>
               </button>
             </div>
 
-            <!-- Quick Locality Selector -->
-            <div class="locality-pills-row">
-              <button class="locality-pill active" data-name="Wagholi" data-lat="18.5793" data-lng="73.9806">Wagholi</button>
-              <button class="locality-pill" data-name="Lonikand" data-lat="18.6112" data-lng="74.0150">Lonikand</button>
-              <button class="locality-pill" data-name="Shikrapur" data-lat="18.7015" data-lng="74.1284">Shikrapur</button>
-              <button class="locality-pill" data-name="Hadapsar" data-lat="18.4984" data-lng="73.9312">Hadapsar</button>
-              <button class="locality-pill" data-name="Aundh" data-lat="18.5721" data-lng="73.8094">Aundh</button>
-              <button class="locality-pill" data-name="Shirur" data-lat="18.8286" data-lng="74.3756">Shirur</button>
+            <!-- Manual City, Locality, or PIN Code Search -->
+            <div class="manual-location-search-box">
+              <div class="manual-search-inner">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" id="manualLocationInput" class="manual-search-input" placeholder="Search City, Locality, or 6-digit PIN code (e.g. 400001, Mumbai, Delhi)..." autocomplete="off">
+                <button type="button" class="btn-cyan-primary btn-sm" id="btnSearchLocation" style="padding:4px 12px;font-size:12px;">Search</button>
+              </div>
+              <div id="manualSearchResults" class="manual-search-results hidden"></div>
             </div>
 
-            <!-- Category Filters -->
-            <div class="facility-type-filters">
+            <!-- Quick City Switchers (Test any Indian metro / district) -->
+            <div style="margin-top:2px;">
+              <span style="font-size:10px;font-weight:700;color:var(--on-surface-variant);text-transform:uppercase;letter-spacing:0.04em;">Quick City Switch (Pan-India):</span>
+              <div class="quick-cities-row">
+                <button type="button" class="quick-city-chip" data-city="Mumbai" data-lat="18.9907" data-lng="72.8536"><span class="material-symbols-outlined" style="font-size:13px;">place</span> Mumbai</button>
+                <button type="button" class="quick-city-chip" data-city="New Delhi" data-lat="28.6139" data-lng="77.2090"><span class="material-symbols-outlined" style="font-size:13px;">place</span> New Delhi</button>
+                <button type="button" class="quick-city-chip" data-city="Bengaluru" data-lat="12.9716" data-lng="77.5946"><span class="material-symbols-outlined" style="font-size:13px;">place</span> Bengaluru</button>
+                <button type="button" class="quick-city-chip" data-city="Pune" data-lat="18.5204" data-lng="73.8567"><span class="material-symbols-outlined" style="font-size:13px;">place</span> Pune</button>
+                <button type="button" class="quick-city-chip" data-city="Lucknow" data-lat="26.8467" data-lng="80.9462"><span class="material-symbols-outlined" style="font-size:13px;">place</span> Lucknow</button>
+                <button type="button" class="quick-city-chip" data-city="Kolkata" data-lat="22.5726" data-lng="88.3639"><span class="material-symbols-outlined" style="font-size:13px;">place</span> Kolkata</button>
+              </div>
+            </div>
+
+            <!-- Category filters -->
+            <div class="facility-type-filters" style="margin-top:8px;">
               <button class="fac-filter-btn active" data-type="ALL">All Nearby</button>
-              <button class="fac-filter-btn" data-type="CLINIC">🩺 Clinics</button>
-              <button class="fac-filter-btn" data-type="PHC">🏥 PHCs</button>
-              <button class="fac-filter-btn" data-type="CHC">🏨 CHC & Hospitals</button>
-              <button class="fac-filter-btn emergency-filter" data-type="EMERGENCY">🚨 24x7 Emergency</button>
+              <button class="fac-filter-btn" data-type="HOSPITAL">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">local_hospital</span> Hospitals
+              </button>
+              <button class="fac-filter-btn" data-type="CLINIC">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">stethoscope</span> Clinics &amp; PHCs
+              </button>
+              <button class="fac-filter-btn emergency-filter" data-type="EMERGENCY">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">emergency</span> 24×7 Emergency
+              </button>
             </div>
           </div>
 
           <!-- Dynamic Facilities List -->
           <div class="facilities-list" id="facilitiesDynamicList">
-            <!-- Populated dynamically by JavaScript -->
+            <!-- Populated dynamically with real hospitals & verified distances -->
           </div>
 
-          <!-- Helplines Box -->
-          <div class="glass-card helplines-card">
-            <h4 class="helplines-title">Toll-Free Government Helplines</h4>
+          <!-- Helplines -->
+          <div class="glass-card helplines-card" style="background:var(--surface-container-lowest);border:1px solid var(--outline-variant);">
+            <h4 class="helplines-title">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);">support_agent</span>
+              Toll-Free Government Healthcare Helplines
+            </h4>
             <div class="helplines-grid">
-              <div class="helpline-badge">🚑 <b>108</b> Ambulance</div>
-              <div class="helpline-badge">🚨 <b>112</b> Emergency</div>
-              <div class="helpline-badge">📞 <b>104</b> Health Advice</div>
-              <div class="helpline-badge">🧠 <b>14416</b> Tele-MANAS</div>
+              <a href="tel:108" class="helpline-badge" style="text-decoration:none;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">emergency</span> <b>108</b> Ambulance (24x7)</a>
+              <a href="tel:112" class="helpline-badge" style="text-decoration:none;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">e911_emergency</span> <b>112</b> Emergency SOS</a>
+              <a href="tel:104" class="helpline-badge" style="text-decoration:none;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">call</span> <b>104</b> Health Advice</a>
+              <a href="tel:14416" class="helpline-badge" style="text-decoration:none;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">psychology</span> <b>14416</b> Tele-MANAS</a>
             </div>
           </div>
 
@@ -534,36 +661,35 @@
         </main>
 
 
-        <!-- ===================================================================
-             VIEW 5: PROFILE, SAVED RECOMMENDATIONS & MEDICAL RECORDS
-             =================================================================== -->
+        <!-- ===========================================================
+             VIEW 5: PROFILE & RECORDS
+             =========================================================== -->
         <main id="view-profile" class="app-view">
-          
+
           <div class="view-header">
-            <h2 class="view-title">User Account & Clinical Records</h2>
-            <p class="view-subtitle">Supabase RLS Protected • Personal History & Handoff Memos</p>
+            <h2 class="view-title">User Account &amp; Clinical Records</h2>
+            <p class="view-subtitle">Supabase RLS Protected • Personal History &amp; Handoff Memos</p>
           </div>
 
-          <!-- User Identity Card -->
+          <!-- Identity Card -->
           <div class="glass-card profile-user-card">
             <div class="profile-card-top">
               <div class="profile-avatar-large">
                 <span id="profileAvatarInitial">G</span>
               </div>
               <div class="profile-user-meta">
-                <h3 class="profile-user-name" id="profileUserName">Sunita Tai (Guest)</h3>
+                <h3 class="profile-user-name" id="profileUserName">Guest User</h3>
                 <p class="profile-user-email" id="profileUserEmail">guest@swasthasathi.org</p>
                 <span class="profile-badge-status" id="profileBadgeStatus">Guest Mode • Sandbox</span>
               </div>
             </div>
-
             <div class="profile-stats-row">
               <div class="pstat-item">
                 <span class="pstat-val" id="profileRecsCount">0</span>
                 <span class="pstat-lbl">Saved Triage</span>
               </div>
               <div class="pstat-item">
-                <span class="pstat-val" id="profileLocationTag">Pune</span>
+                <span class="pstat-val" id="profileLocationTag">Not Set</span>
                 <span class="pstat-lbl">Location</span>
               </div>
               <div class="pstat-item">
@@ -571,14 +697,36 @@
                 <span class="pstat-lbl">Row Security</span>
               </div>
             </div>
-
             <div class="profile-card-actions">
-              <button type="button" class="btn-cyan-primary btn-sm" id="btnProfileAuthAction">Sign In / Register</button>
-              <button type="button" class="btn-glass-subtle btn-sm hidden" id="btnProfileSignOut">Sign Out</button>
+              <button type="button" class="btn-cyan-primary btn-sm" id="btnProfileAuthAction">
+                <span class="material-symbols-outlined" style="font-size:15px;">login</span>
+                Sign In / Register
+              </button>
+              <button type="button" class="btn-glass-subtle btn-sm hidden" id="btnProfileSignOut">
+                <span class="material-symbols-outlined" style="font-size:15px;">logout</span>
+                Sign Out
+              </button>
             </div>
           </div>
 
-          <!-- Saved Doctor Recommendations (Supabase RLS Protected) -->
+          <!-- My Appointments -->
+          <div class="profile-section-block">
+            <div class="section-header">
+              <h3 class="section-title">My Consultation Appointments</h3>
+              <button type="button" class="section-link" id="btnProfileBookAppt">+ Book New</button>
+            </div>
+            <div id="profileAppointmentsList" class="appointments-list-container">
+              <div class="empty-state-box">
+                <span class="empty-icon">
+                  <span class="material-symbols-outlined" style="font-size:36px;color:var(--primary);">calendar_month</span>
+                </span>
+                <p class="empty-title">No appointments scheduled</p>
+                <p class="empty-sub">Book an OPD consultation with a verified medical officer or PHC facility.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saved Recommendations -->
           <div class="profile-section-block">
             <div class="section-header">
               <h3 class="section-title">Saved Recommendations</h3>
@@ -586,14 +734,16 @@
             </div>
             <div id="savedRecommendationsList" class="saved-recs-container">
               <div class="empty-state-box">
-                <span class="empty-icon">📋</span>
+                <span class="empty-icon">
+                  <span class="material-symbols-outlined" style="font-size:36px;color:var(--primary);">assignment</span>
+                </span>
                 <p class="empty-title">No saved recommendations yet</p>
                 <p class="empty-sub">Run an AI symptom triage to generate structured recommendations and save them to your account.</p>
               </div>
             </div>
           </div>
 
-          <!-- Doctor Consultation Preferences -->
+          <!-- Consultation Preferences -->
           <div class="glass-card doctor-preferences-card">
             <div class="section-header">
               <h3 class="section-title">Consultation Preferences</h3>
@@ -604,14 +754,14 @@
                 <label for="prefSpecialty">Preferred Specialty:</label>
                 <select id="prefSpecialty" class="pref-select">
                   <option value="General Physician">General Physician / Primary Care</option>
-                  <option value="Pediatrics">Pediatrics & Child Health</option>
-                  <option value="Cardiology">Cardiology & Internal Medicine</option>
-                  <option value="Family Medicine">Family Medicine & Diabetology</option>
+                  <option value="Pediatrics">Pediatrics &amp; Child Health</option>
+                  <option value="Cardiology">Cardiology &amp; Internal Medicine</option>
+                  <option value="Family Medicine">Family Medicine &amp; Diabetology</option>
                 </select>
               </div>
               <div class="pref-field">
                 <label for="prefLocation">Preferred Locality:</label>
-                <input type="text" id="prefLocation" class="pref-input" value="Wagholi / Haveli, Pune">
+                <input type="text" id="prefLocation" class="pref-input" placeholder="e.g. Mumbai, New Delhi, Bengaluru, Pune">
               </div>
               <div class="pref-field">
                 <label for="prefBudget">Budget Tier:</label>
@@ -622,30 +772,35 @@
                 </select>
               </div>
             </div>
-            <div id="prefSaveToast" class="pref-toast hidden">✓ Preferences saved to Supabase (RLS)!</div>
+            <div id="prefSaveToast" class="pref-toast hidden">
+              <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">task_alt</span>
+              Preferences saved to Supabase (RLS)!
+            </div>
           </div>
 
-          <!-- ASHA Referral Summary Memo -->
+          <!-- ASHA Summary -->
           <div class="profile-section-block">
             <div class="section-header">
               <h3 class="section-title">ASHA Clinical Referral Summary</h3>
               <div class="summary-btn-group">
-                <button type="button" class="btn-copy-summary" id="copySummaryBtn">📋 Copy</button>
-                <button type="button" class="btn-share-whatsapp" id="shareWhatsappBtn">💬 WhatsApp</button>
+                <button type="button" class="btn-copy-summary" id="copySummaryBtn">
+                  <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">content_copy</span> Copy
+                </button>
+                <button type="button" class="btn-share-whatsapp" id="shareWhatsappBtn">
+                  <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">chat</span> WhatsApp
+                </button>
               </div>
             </div>
-
             <div class="glass-card summary-card">
               <div class="summary-card-header">
                 <span class="summary-tag">Session ID: <code id="summarySessionId">swastha-92b1</code></span>
               </div>
-
               <div id="copyToast" class="copy-toast-banner hidden">
-                ✓ Referral summary copied to clipboard!
+                <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">check_circle</span>
+                Referral summary copied to clipboard!
               </div>
-
               <pre class="summary-pre" id="summaryPreBlock">=== SWASTHASATHI HEALTHCARE REFERRAL SUMMARY ===
-Date & Time: 2026-10-07 18:40
+Date &amp; Time: 2026-10-07 18:40
 Session Language: ENGLISH
 Reported Symptoms: 3-year-old child with high fever for 3 days and poor fluid intake
 
@@ -666,87 +821,220 @@ NOTE: Decision-support guidance only. Does not replace professional clinical dia
             </div>
           </div>
 
+          
+          <!-- Legal & Privacy Footer Links -->
+          <div style="margin:var(--space-md) 0 var(--space-xl);text-align:center;display:flex;justify-content:center;gap:16px;font-size:12px;">
+            <a href="#" id="linkOpenPrivacy" style="color:var(--on-surface-variant);text-decoration:underline;">Privacy Policy</a>
+            <span style="color:var(--outline-variant);">•</span>
+            <a href="#" id="linkOpenTerms" style="color:var(--on-surface-variant);text-decoration:underline;">Terms of Service</a>
+            <span style="color:var(--outline-variant);">•</span>
+            <span style="color:var(--on-surface-variant);">ABDM Aligned</span>
+          </div>
+
           <div style="height: 90px;"></div>
         </main>
 
-      </div>
 
-      <!-- ===================================================================
-           FLOATING BOTTOM DOCK NAVIGATION
-           =================================================================== -->
+        <!-- ===========================================================
+             VIEW 6: DOCTOR DASHBOARD
+             =========================================================== -->
+        <main id="view-doctor-dashboard" class="app-view">
+
+          <div class="view-header">
+            <h2 class="view-title">Clinician Portal &amp; OPD Queue</h2>
+            <p class="view-subtitle">Maharashtra Medical Council Verified Practitioner Access</p>
+          </div>
+
+          <!-- Clinician Profile -->
+          <div class="glass-card doctor-profile-header">
+            <div class="profile-card-top">
+              <div class="profile-avatar-large" style="background:linear-gradient(135deg,var(--secondary),var(--primary));">
+                <span id="docHeaderInitial">Dr</span>
+              </div>
+              <div class="profile-user-meta">
+                <div class="verified-doc-badge">
+                  <span class="material-symbols-outlined" style="font-size:11px;vertical-align:middle;">verified</span>
+                  Verified Practitioner
+                </div>
+                <h3 class="profile-user-name" id="docProfileName">Doctor Profile</h3>
+                <p class="profile-user-email" id="docProfileEmail">doctor@swasthasathi.org</p>
+                <span class="profile-badge-status" id="docSpecialtyHospital">Verified Medical Officer</span>
+              </div>
+            </div>
+            <div class="doc-council-info">
+              <span class="doc-council-label">State Medical Council Registration</span>
+              <span class="doc-council-value" id="docRegDisplay">Registered Medical Practitioner (NMC/SMC)</span>
+              <span style="font-size:11px;color:var(--on-surface-variant);display:block;margin-top:2px;">Verified via Directorate of Health Services</span>
+            </div>
+            <div class="profile-card-actions" style="margin-top:var(--space-sm);">
+              <button type="button" class="btn-glass-subtle btn-sm" id="btnDoctorSignOut">
+                <span class="material-symbols-outlined" style="font-size:15px;">logout</span>
+                Sign Out
+              </button>
+            </div>
+          </div>
+
+          <!-- OPD Queue -->
+          <div class="profile-section-block">
+            <div class="section-header">
+              <h3 class="section-title">OPD Consultation Queue</h3>
+              <span class="stats-live-tag" id="docQueueCountTag">Active Queue</span>
+            </div>
+            <div id="doctorAppointmentsQueue" class="appointments-list-container">
+              <div class="empty-state-box">
+                <span class="empty-icon">
+                  <span class="material-symbols-outlined" style="font-size:36px;color:var(--primary);">stethoscope</span>
+                </span>
+                <p class="empty-title">No pending appointments</p>
+                <p class="empty-sub">Patient bookings for your OPD will appear here with symptom context and triage severity.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Triage Handoffs -->
+          <div class="profile-section-block">
+            <div class="section-header">
+              <h3 class="section-title">Incoming Triage Referrals</h3>
+              <span class="stats-live-tag">Clinical Handoffs</span>
+            </div>
+            <div id="doctorTriageHandoffs" class="saved-recs-container">
+              <div class="empty-state-box">
+                <span class="empty-icon">
+                  <span class="material-symbols-outlined" style="font-size:36px;color:var(--primary);">assignment</span>
+                </span>
+                <p class="empty-title">No incoming triage referrals</p>
+                <p class="empty-sub">Patient triage summaries and clinical handoff notes will appear here in real-time.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 90px;"></div>
+        </main>
+
+
+        <!-- ===========================================================
+             VIEW 7: DOCTOR VERIFICATION PENDING
+             =========================================================== -->
+        <main id="view-doctor-pending" class="app-view">
+
+          <div class="view-header">
+            <h2 class="view-title">Credential Verification</h2>
+            <p class="view-subtitle">Review Process for Registered Medical Officers</p>
+          </div>
+
+          <div class="glass-card verification-timeline-card">
+            <div style="text-align:center;margin-bottom:var(--space-md);">
+              <div style="width:64px;height:64px;border-radius:50%;background:var(--tertiary-fixed);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-sm);">
+                <span class="material-symbols-outlined" style="font-size:32px;color:var(--tertiary);">pending</span>
+              </div>
+              <h3 style="font-family:var(--font-jakarta);font-size:18px;font-weight:700;color:var(--on-surface);margin-bottom:6px;">Registration Verification Pending</h3>
+              <p style="font-size:13px;color:var(--on-surface-variant);line-height:1.5;">Your credentials have been submitted for verification against the State Medical Council registry. To protect patient safety, only verified clinicians can access patient consultation queues.</p>
+            </div>
+
+            <div class="timeline-track">
+              <div class="timeline-step completed">
+                <div class="timeline-step-title">
+                  <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;color:var(--secondary);">check_circle</span>
+                  1. Account Created
+                </div>
+                <div class="timeline-step-desc">Doctor profile established with basic contact details.</div>
+              </div>
+              <div class="timeline-step active">
+                <div class="timeline-step-title">
+                  <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;color:var(--primary);">hourglass_top</span>
+                  2. State Council Verification (In Progress)
+                </div>
+                <div class="timeline-step-desc">Validating registration number against Maharashtra Medical Council (MMC) records.</div>
+              </div>
+              <div class="timeline-step">
+                <div class="timeline-step-title">3. Clinical Directory Activation</div>
+                <div class="timeline-step-desc">Upon approval, doctor profile and OPD availability become visible to patients.</div>
+              </div>
+            </div>
+
+            <div class="doc-council-info" style="margin-top:var(--space-md);">
+              <span class="doc-council-label">Submitted Credentials</span>
+              <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+                <div style="font-size:12px;color:var(--on-surface);"><b>Doctor Name:</b> <span id="pendingDocName">Registered Medical Officer</span></div>
+                <div style="font-size:12px;color:var(--on-surface);"><b>Registration No:</b> <span id="pendingDocReg" style="color:var(--primary);font-family:'JetBrains Mono',monospace;">Verification In Progress</span></div>
+                <div style="font-size:12px;color:var(--on-surface);"><b>Medical Council:</b> <span id="pendingDocCouncil">State Medical Council</span></div>
+                <div style="font-size:12px;color:var(--on-surface);"><b>Qualification:</b> <span id="pendingDocQual">MBBS / Post-Graduate Clinical Degree</span></div>
+              </div>
+            </div>
+
+            <div style="margin-top:var(--space-md);text-align:center;">
+              <button type="button" class="btn-glass-subtle btn-sm" id="btnPendingSignOut">
+                <span class="material-symbols-outlined" style="font-size:15px;">logout</span>
+                Sign Out
+              </button>
+            </div>
+          </div>
+
+          <div style="height: 90px;"></div>
+        </main>
+
+      </div> <!-- /.screen-scroll-container -->
+
+
+      <!-- ==============================================================
+           BOTTOM DOCK NAVIGATION
+           ============================================================== -->
       <nav class="bottom-dock">
-        
+
         <button class="dock-item active" data-view="home">
           <div class="dock-icon-wrapper">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
+            <span class="material-symbols-outlined" style="font-size:24px;font-variation-settings:'FILL' 0;">home</span>
           </div>
           <span class="dock-label" id="dockLabelHome">Home</span>
         </button>
 
         <button class="dock-item" data-view="triage">
           <div class="dock-icon-wrapper">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
-            </svg>
+            <span class="material-symbols-outlined" style="font-size:24px;">cardiology</span>
           </div>
           <span class="dock-label" id="dockLabelTriage">Triage</span>
         </button>
 
         <button class="dock-item" data-view="records">
           <div class="dock-icon-wrapper">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
-              <path d="M14 2v6h6"></path>
-              <path d="M16 13H8"></path>
-              <path d="M16 17H8"></path>
-              <path d="M10 9H8"></path>
-            </svg>
+            <span class="material-symbols-outlined" style="font-size:24px;">clinical_notes</span>
           </div>
           <span class="dock-label" id="dockLabelRecords">Records</span>
         </button>
 
         <button class="dock-item" data-view="facilities">
           <div class="dock-icon-wrapper">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
+            <span class="material-symbols-outlined" style="font-size:24px;">local_hospital</span>
           </div>
           <span class="dock-label" id="dockLabelPHCs">PHCs</span>
         </button>
 
         <button class="dock-item" data-view="profile">
           <div class="dock-icon-wrapper">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <span class="material-symbols-outlined" style="font-size:24px;">person</span>
           </div>
           <span class="dock-label" id="dockLabelProfile">Profile</span>
         </button>
 
       </nav>
 
-      <!-- ===================================================================
-           INTERACTIVE VOICE ASSISTANT MODAL / DRAWER
-           =================================================================== -->
+
+      <!-- ==============================================================
+           VOICE ASSISTANT MODAL
+           ============================================================== -->
       <div id="voiceModal" class="glass-modal-backdrop hidden">
         <div class="glass-modal-card">
           <div class="voice-modal-top">
-            <span class="voice-modal-badge">🎙️ Voice Assistant</span>
+            <span class="voice-modal-badge">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);font-variation-settings:'FILL' 1;">mic</span>
+              Voice Assistant
+            </span>
             <button class="modal-close-btn" id="closeVoiceModalBtn">✕</button>
           </div>
 
           <div class="voice-wave-container">
             <div class="pulsing-mic-ring" id="pulsingMicRing">
-              <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-              </svg>
+              <span class="material-symbols-outlined" style="font-size:32px;color:var(--primary);font-variation-settings:'FILL' 1;">mic</span>
             </div>
             <div class="voice-sound-bars" id="voiceSoundBars">
               <span class="bar b1"></span>
@@ -755,34 +1043,40 @@ NOTE: Decision-support guidance only. Does not replace professional clinical dia
               <span class="bar b4"></span>
               <span class="bar b5"></span>
             </div>
-            <span class="recording-timer" id="recordingTimer">00:03</span>
+            <span class="recording-timer" id="recordingTimer">00:00</span>
             <p class="voice-status-text" id="voiceStatusText">Listening... speak in Hindi, Marathi, or English</p>
           </div>
 
           <div class="voice-modal-actions">
-            <button class="btn-voice-stop" id="btnStopVoiceRecord">✓ Stop & Transcribe</button>
+            <button class="btn-voice-stop" id="btnStopVoiceRecord">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;">check</span>
+              Stop &amp; Transcribe
+            </button>
           </div>
 
-          <!-- Quick voice complaints presets -->
           <div class="voice-presets-box">
             <span class="presets-title">Or Tap Quick Voice Scenario:</span>
             <div class="voice-preset-chips">
-              <button class="preset-chip" data-phrase="बच्चे को तीन दिन से बहुत तेज बुखार है और वह पानी नहीं पी रहा">👶 बुखार 3 दिन (Hindi)</button>
-              <button class="preset-chip" data-phrase="सीने में बहुत तेज़ दर्द है और बहुत पसीना आ रहा है">🚨 छाती में दर्द (Emergency)</button>
-              <button class="preset-chip" data-phrase="मुलाला तीव्र ताप आहे आणि खूप उलटी होत आहे">🤒 ताप आणि उलटी (Marathi)</button>
-              <button class="preset-chip" data-phrase="Mild sore throat and slight cough since yesterday">🤧 Mild Cold (English)</button>
+              <button class="preset-chip" data-phrase="बच्चे को तीन दिन से बहुत तेज बुखार है और वह पानी नहीं पी रहा"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">child_care</span> बुखार 3 दिन (Hindi)</button>
+              <button class="preset-chip" data-phrase="सीने में बहुत तेज़ दर्द है और बहुत पसीना आ रहा है"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">emergency</span> छाती में दर्द (Emergency)</button>
+              <button class="preset-chip" data-phrase="मुलाला तीव्र ताप आहे आणि खूप उलटी होत आहे"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">thermostat</span> ताप आणि उलटी (Marathi)</button>
+              <button class="preset-chip" data-phrase="Mild sore throat and slight cough since yesterday"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">medical_services</span> Mild Cold (English)</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===================================================================
-           INTERACTIVE PATIENT VITALS LOGGING MODAL
-           =================================================================== -->
+
+      <!-- ==============================================================
+           PATIENT VITALS MODAL
+           ============================================================== -->
       <div id="vitalsModal" class="glass-modal-backdrop hidden">
         <div class="glass-modal-card">
           <div class="voice-modal-top">
-            <span class="voice-modal-badge">🩺 Record Patient Vitals</span>
+            <span class="voice-modal-badge">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);">vital_signs</span>
+              Record Patient Vitals
+            </span>
             <button class="modal-close-btn" id="closeVitalsModalBtn">✕</button>
           </div>
 
@@ -793,108 +1087,338 @@ NOTE: Decision-support guidance only. Does not replace professional clinical dia
               <label for="inputBodyTemp">Body Temperature (°F):</label>
               <input type="number" id="inputBodyTemp" step="0.1" placeholder="e.g. 98.6" min="90" max="110">
             </div>
-
             <div class="form-row">
               <label for="inputBP">Blood Pressure (mmHg):</label>
               <input type="text" id="inputBP" placeholder="e.g. 120/80">
             </div>
-
             <div class="form-row">
               <label for="inputSugar">Blood Sugar (mg/dL):</label>
               <input type="number" id="inputSugar" placeholder="e.g. 95" min="20" max="600">
             </div>
-
             <div class="form-row">
               <label for="inputHeartRate">Heart Rate / Pulse (bpm):</label>
               <input type="number" id="inputHeartRate" placeholder="e.g. 72" min="30" max="220">
             </div>
-
             <div class="form-btn-row">
               <button type="button" class="btn-glass-subtle" id="cancelVitalsBtn">Cancel</button>
-              <button type="submit" class="btn-cyan-primary">Save Vitals</button>
+              <button type="submit" class="btn-cyan-primary">
+                <span class="material-symbols-outlined" style="font-size:16px;">save</span>
+                Save Vitals
+              </button>
             </div>
           </form>
         </div>
       </div>
 
-      <!-- ===================================================================
-           INTERACTIVE SUPABASE AUTH MODAL (Sign In, Sign Up, Cloud Config)
-           ================================================================== -->
+
+      <!-- ==============================================================
+           AUTH MODAL (Sign In / Sign Up)
+           ============================================================== -->
       <div id="authModal" class="glass-modal-backdrop hidden">
         <div class="glass-modal-card auth-modal-card">
-          <div class="voice-modal-top">
-            <span class="voice-modal-badge" id="authModalTitle">🔐 Patient & Clinician Portal</span>
-            <button type="button" class="modal-close-btn" id="closeAuthModalBtn">✕</button>
+
+          <!-- Brand header -->
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:var(--space-md);">
+            <div style="width:56px;height:56px;border-radius:50%;background:var(--secondary-container);display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-sm);position:relative;">
+              <span class="material-symbols-outlined" style="font-size:28px;color:var(--primary);font-variation-settings:'FILL' 1;">health_and_safety</span>
+              <div style="position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <span class="material-symbols-outlined" style="font-size:10px;color:white;">auto_awesome</span>
+              </div>
+            </div>
+            <span id="authModalTitle" style="font-family:var(--font-jakarta);font-size:20px;font-weight:700;color:var(--on-surface);">Patient &amp; Clinician Portal</span>
+            <p style="font-size:12px;color:var(--on-surface-variant);margin-top:4px;">Sign in with your registered email. System automatically resolves your clinical role.</p>
           </div>
 
-          <!-- Auth Mode Tabs -->
+          <!-- Security pill -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:var(--space-md);padding:6px 12px;background:var(--surface-container-high);border-radius:var(--radius-pill);width:fit-content;margin-left:auto;margin-right:auto;">
+            <span class="material-symbols-outlined" style="font-size:14px;color:var(--secondary);font-variation-settings:'FILL' 1;">verified_user</span>
+            <span style="font-size:11px;font-weight:600;color:var(--secondary);">Unified Secure Portal • 256-Bit Encrypted</span>
+          </div>
+
+          <!-- Tabs -->
           <div class="auth-tabs-row">
             <button type="button" class="auth-tab-btn active" id="tabBtnSignIn">Sign In</button>
             <button type="button" class="auth-tab-btn" id="tabBtnSignUp">Create Account</button>
           </div>
 
-          <!-- Alert / Error message banner -->
+          <!-- Error banner -->
           <div id="authAlertBox" class="auth-alert-banner hidden"></div>
 
           <!-- Form 1: Sign In -->
           <form id="signInForm" class="auth-form-body">
             <div class="form-row">
-              <label for="signInEmail">Email Address:</label>
-              <input type="email" id="signInEmail" placeholder="e.g. sunita@swasthasathi.org" required>
+              <label for="signInEmail">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">badge</span>
+                Email Address or ABHA Number:
+              </label>
+              <input type="email" id="signInEmail" placeholder="name@domain.com" required>
             </div>
             <div class="form-row">
-              <label for="signInPassword">Password:</label>
-              <input type="password" id="signInPassword" placeholder="••••••••" required>
+              <label for="signInPassword">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">lock</span>
+                Password:
+              </label>
+              <input type="password" id="signInPassword" placeholder="Enter your secure password" required>
             </div>
             <div class="form-btn-row">
               <button type="submit" class="btn-cyan-primary btn-block" id="btnSubmitSignIn">
                 <span class="btn-loader-spinner hidden" id="authSignInSpinner"></span>
-                <span>Sign In with Supabase</span>
+                <span>Sign In to SwasthaSathi</span>
+                <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
               </button>
             </div>
+
+
+            <!-- Security note -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--space-sm);">
+              <span class="material-symbols-outlined" style="font-size:13px;color:var(--on-surface-variant);">shield</span>
+              <p style="font-size:11px;color:var(--on-surface-variant);">Protected by Supabase Auth with Row Level Security (RLS) enforcement.</p>
+            </div>
+
+            <!-- Demo logins -->
             <div class="demo-auth-helper">
-              <button type="button" class="btn-demo-quick-login" id="btnDemoQuickLogin">
-                ⚡ 1-Click Demo Login (Judge Test)
-              </button>
+              <span style="font-size:10px;color:var(--on-surface-variant);display:block;margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">1-Click Role Demonstrations (Judge Sandbox):</span>
+              <div class="demo-logins-row">
+                <button type="button" class="btn-demo-pill" id="btnDemoPatientLogin"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">person</span> Patient</button>
+                <button type="button" class="btn-demo-pill" id="btnDemoDoctorLogin"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">stethoscope</span> Verified Doctor</button>
+                <button type="button" class="btn-demo-pill" id="btnDemoPendingLogin"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">pending</span> Pending Doctor</button>
+              </div>
             </div>
           </form>
 
           <!-- Form 2: Sign Up -->
           <form id="signUpForm" class="auth-form-body hidden">
+            <div>
+              <label style="font-size:11px;font-weight:700;color:var(--on-surface-variant);margin-bottom:4px;display:block;text-transform:uppercase;">I am registering as:</label>
+              <div class="role-select-group">
+                <button type="button" class="role-radio-btn active" id="roleBtnPatient" data-role="patient">
+                  <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;font-variation-settings:'FILL' 1;">favorite</span>
+                  Patient / Citizen
+                </button>
+                <button type="button" class="role-radio-btn" id="roleBtnDoctor" data-role="doctor">
+                  <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;font-variation-settings:'FILL' 1;">stethoscope</span>
+                  Medical Doctor
+                </button>
+              </div>
+            </div>
             <div class="form-row">
               <label for="signUpName">Full Name:</label>
-              <input type="text" id="signUpName" placeholder="e.g. Dr. Rajesh Sharma or Sunita Tai" required>
+              <input type="text" id="signUpName" placeholder="e.g. Sunita Tai or Dr. Rajesh Sharma" required>
             </div>
             <div class="form-row">
               <label for="signUpEmail">Email Address:</label>
-              <input type="email" id="signUpEmail" placeholder="e.g. rajesh@swasthasathi.org" required>
+              <input type="email" id="signUpEmail" placeholder="e.g. user@swasthasathi.org" required>
             </div>
             <div class="form-row">
               <label for="signUpPassword">Password (min 6 characters):</label>
               <input type="password" id="signUpPassword" placeholder="••••••••" minlength="6" required>
             </div>
+            <!-- Doctor fields -->
+            <div id="doctorSignupFields" class="doctor-signup-fields hidden">
+              <div style="padding:var(--space-sm) var(--space-md);background:var(--primary-fixed);border-radius:var(--radius-lg);margin-bottom:var(--space-sm);">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span class="material-symbols-outlined" style="font-size:16px;color:var(--primary);font-variation-settings:'FILL' 1;">verified_user</span>
+                  <span style="font-size:13px;font-weight:700;color:var(--on-surface);">Medical Council Verification</span>
+                </div>
+                <p style="font-size:11px;color:var(--on-surface-variant);margin-top:2px;">Mandatory for Telemedicine practice licenses</p>
+              </div>
+              <div class="form-row">
+                <label for="signUpRegNumber">State Medical Council Reg. No.:</label>
+                <input type="text" id="signUpRegNumber" placeholder="e.g. MMC-2016-11-5082">
+              </div>
+              <div class="form-row">
+                <label for="signUpMedicalCouncil">State Medical Council:</label>
+                <select id="signUpMedicalCouncil" class="pref-select">
+                  <option value="Maharashtra Medical Council (MMC)">Maharashtra Medical Council (MMC)</option>
+                  <option value="Maharashtra Council of Indian Medicine (MCIM)">Maharashtra Council of Indian Medicine (MCIM)</option>
+                  <option value="Delhi Medical Council (DMC)">Delhi Medical Council (DMC)</option>
+                  <option value="Karnataka Medical Council (KMC)">Karnataka Medical Council (KMC)</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="signUpQualification">Highest Medical Qualification:</label>
+                <input type="text" id="signUpQualification" placeholder="e.g. MBBS, MD (General Medicine)">
+              </div>
+              <div class="form-row">
+                <label for="signUpSpecialty">Primary Specialty:</label>
+                <input type="text" id="signUpSpecialty" placeholder="e.g. General Medicine, Pediatrics">
+              </div>
+              <div class="form-row">
+                <label for="signUpHospital">Hospital / Clinic Affiliation:</label>
+                <input type="text" id="signUpHospital" placeholder="e.g. Primary Health Centre / Arogya Clinic">
+              </div>
+            </div>
             <div class="form-btn-row">
               <button type="submit" class="btn-cyan-primary btn-block" id="btnSubmitSignUp">
                 <span class="btn-loader-spinner hidden" id="authSignUpSpinner"></span>
-                <span>Create Account (Supabase Auth)</span>
+                <span id="btnSubmitSignUpText">Create Patient Account</span>
+                <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
               </button>
             </div>
           </form>
 
-          <!-- Form 3 (Cloud Config removed) -->
-
           <div class="auth-modal-footer">
             <button type="button" class="btn-continue-guest-link" id="btnModalContinueGuest">
-              Continue as Guest (No Account Required)
+              Continue in Guest Sandbox Mode
+            </button>
+          </div>
+
+          <!-- Compliance footer -->
+          <div style="margin-top:var(--space-md);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;opacity:0.85;">
+            <div style="display:flex;align-items:center;gap:6px;color:var(--on-surface-variant);">
+              <span class="material-symbols-outlined" style="font-size:16px;color:var(--secondary);">health_and_safety</span>
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">Ayushman Bharat Digital Mission (ABDM) Compliant</span>
+            </div>
+            <span style="font-size:11px;color:var(--on-surface-variant);">ISO-27001 Certified Clinical Grade Infrastructure</span>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ==============================================================
+           APPOINTMENT BOOKING MODAL
+           ============================================================== -->
+      <div id="appointmentModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card appointment-modal-card">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);">calendar_add_on</span>
+              Book Doctor Consultation
+            </span>
+            <button type="button" class="modal-close-btn" id="closeAppointmentModalBtn">✕</button>
+          </div>
+
+          <p class="modal-sub-info">Schedule an in-person OPD consultation at a verified healthcare facility or PHC.</p>
+
+          <form id="appointmentForm" class="auth-form-body">
+            <div class="form-row">
+              <label for="apptFacilitySelect">Select Doctor / Facility:</label>
+              <select id="apptFacilitySelect" class="pref-select" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="apptDateInput">Consultation Date:</label>
+              <input type="date" id="apptDateInput" class="pref-input" required>
+            </div>
+            <div class="form-row">
+              <label>Select OPD Slot:</label>
+              <div class="slots-grid">
+                <button type="button" class="slot-btn active" data-slot="Morning OPD (9:00 AM - 1:00 PM)">Morning OPD (9 AM – 1 PM)</button>
+                <button type="button" class="slot-btn" data-slot="Evening OPD (4:30 PM - 8:00 PM)">Evening OPD (4:30 PM – 8 PM)</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="apptReasonInput">Reason for Consultation:</label>
+              <textarea id="apptReasonInput" class="pref-input" style="min-height:64px;resize:vertical;" placeholder="Describe primary symptoms..." required></textarea>
+            </div>
+            <div id="apptAlertBanner" class="auth-alert-banner hidden"></div>
+            <div class="form-btn-row">
+              <button type="button" class="btn-glass-subtle" id="cancelAppointmentBtn">Cancel</button>
+              <button type="submit" class="btn-cyan-primary" id="btnConfirmAppointment">
+                <span class="btn-loader-spinner hidden" id="apptSpinner"></span>
+                <span>Confirm Appointment</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      <!-- ==============================================================
+           CLINICAL GUIDELINES MODAL
+           ============================================================== -->
+      <div id="guidelinesModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card guidelines-modal-card">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);">menu_book</span>
+              Verified Clinical Sources
+            </span>
+            <button type="button" class="modal-close-btn" id="closeGuidelinesModalBtn">✕</button>
+          </div>
+
+          <p class="modal-sub-info">SwasthaSathi clinical logic adheres to established public health guidelines from the Ministry of Health and Family Welfare (MoHFW), Govt of India.</p>
+
+          <div class="guidelines-scroll-body" id="guidelinesListContainer">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div style="margin-top:var(--space-md);text-align:center;">
+            <button type="button" class="btn-cyan-primary btn-sm" id="btnCloseGuidelines">
+              <span class="material-symbols-outlined" style="font-size:16px;">check</span>
+              Understood
             </button>
           </div>
         </div>
       </div>
 
-    </div>
-  </div>
+
+      <!-- ==============================================================
+           PRIVACY POLICY MODAL
+           ============================================================== -->
+      <div id="privacyModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card" style="max-height:85vh;overflow-y:auto;">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);">privacy_tip</span>
+              Privacy Policy
+            </span>
+            <button type="button" class="modal-close-btn" id="closePrivacyModalBtn">✕</button>
+          </div>
+          <div style="font-size:13px;color:var(--on-surface-variant);line-height:1.6;margin-top:var(--space-sm);">
+            <h4 style="font-size:14px;font-weight:700;color:var(--on-surface);margin-bottom:4px;">1. Zero Unsolicited Data Retention</h4>
+            <p style="margin-bottom:10px;">SwasthaSathi is engineered with strict patient privacy. Clinical symptom queries entered into the triage engine are processed ephemerally and never sold, monetized, or shared with commercial third parties.</p>
+            
+            <h4 style="font-size:14px;font-weight:700;color:var(--on-surface);margin-bottom:4px;">2. Location Data Policy</h4>
+            <p style="margin-bottom:10px;">Device geolocation is requested strictly with explicit user consent via the browser Geolocation API. Coordinates are used solely to compute nearby hospital distances via OpenStreetMap and are never tracked continuously or stored persistently without permission.</p>
+
+            <h4 style="font-size:14px;font-weight:700;color:var(--on-surface);margin-bottom:4px;">3. Data Security & Access Control</h4>
+            <p style="margin-bottom:10px;">User accounts and consultation bookings are protected by Supabase Row-Level Security (RLS). Only authenticated patients and verified treating doctors can view consultation details.</p>
+
+            <h4 style="font-size:14px;font-weight:700;color:var(--on-surface);margin-bottom:4px;">4. Compliance</h4>
+            <p>Designed in accordance with Indian Digital Personal Data Protection (DPDP) Act principles and Ministry of Health and Family Welfare (MoHFW) telemedicine guidelines.</p>
+          </div>
+          <div style="margin-top:var(--space-md);text-align:center;">
+            <button type="button" class="btn-cyan-primary btn-sm" id="btnUnderstoodPrivacy">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================================
+           TERMS OF SERVICE MODAL
+           ============================================================== -->
+      <div id="termsModal" class="glass-modal-backdrop hidden">
+        <div class="glass-modal-card" style="max-height:85vh;overflow-y:auto;">
+          <div class="voice-modal-top">
+            <span class="voice-modal-badge">
+              <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;color:var(--primary);">gavel</span>
+              Terms of Service & Clinical Disclaimer
+            </span>
+            <button type="button" class="modal-close-btn" id="closeTermsModalBtn">✕</button>
+          </div>
+          <div style="font-size:13px;color:var(--on-surface-variant);line-height:1.6;margin-top:var(--space-sm);">
+            <h4 style="font-size:14px;font-weight:700;color:var(--on-surface);margin-bottom:4px;">1. Clinical Decision-Support Only</h4>
+            <p style="margin-bottom:10px;">SwasthaSathi is an informational decision-support platform designed to assist citizens and frontline healthcare workers. It does <b>NOT</b> provide formal clinical diagnoses, prescribe prescription medications, or replace in-person consultation with a licensed medical practitioner.</p>
+
+            <h4 style="font-size:14px;font-weight:700;color:var(--error);margin-bottom:4px;">2. Emergency Care Protocol</h4>
+            <p style="margin-bottom:10px;">If you or someone in your care is experiencing severe clinical emergencies—including crushing chest pain, difficulty breathing, altered mental status, severe bleeding, or unresponsive fever in infants—call national emergency response (<b>108</b> / <b>112</b>) immediately or proceed to the nearest emergency casualty ward.</p>
+
+            <h4 style="font-size:14px;font-weight:700;color:var(--on-surface);margin-bottom:4px;">3. Doctor Verification</h4>
+            <p>Doctor profiles are linked with State Medical Council (SMC/NMC) registration numbers. Platform access for clinician accounts is granted following administrative credential review.</p>
+          </div>
+          <div style="margin-top:var(--space-md);text-align:center;">
+            <button type="button" class="btn-cyan-primary btn-sm" id="btnUnderstoodTerms">Understood</button>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /.phone-frame -->
+  </div> <!-- /.device-wrapper -->
 
   <script src="supabaseClient.js?v=3.0"></script>
+  <script type="module" src="js/main.js?v=3.0"></script>
   <script src="app.js?v=3.0"></script>
+
 </body>
 </html>

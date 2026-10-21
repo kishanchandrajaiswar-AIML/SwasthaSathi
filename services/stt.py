@@ -43,8 +43,9 @@ def transcribe_audio_bytes(
 
         client = Groq(api_key=groq_api_key, timeout=20.0)
 
-        # Create in-memory file tuple
-        file_tuple = (filename, io.BytesIO(audio_bytes), "audio/wav")
+        ext = filename.split(".")[-1].lower() if "." in filename else "webm"
+        mime = "audio/mp4" if ext in ("m4a", "mp4") else (f"audio/{ext}" if ext in ("webm", "ogg", "wav", "mp3") else "audio/webm")
+        file_tuple = (filename, io.BytesIO(audio_bytes), mime)
 
         lang = language_hint if language_hint in ("hi", "mr", "en") else None
 
