@@ -1,0 +1,16 @@
+{
+  "appId": "com.swasthasathi.app",
+  "appName": "SwasthaSathi",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#0f766e"
+    }
+  }
+}

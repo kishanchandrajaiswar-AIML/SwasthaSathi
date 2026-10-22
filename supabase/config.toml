@@ -1,0 +1,26 @@
+# Supabase Project Configuration for SwasthaSathi
+project_id = "gsrosxssydqirmhgwpdo"
+
+[api]
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[auth]
+site_url = "http://localhost:8080"
+additional_redirect_urls = ["https://localhost", "capacitor://localhost"]
+jwt_expiry = 3600
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+
+[functions.triage]
+verify_jwt = false
+
+[functions.transcribe]
+verify_jwt = false
+
+[functions.report]
+verify_jwt = false

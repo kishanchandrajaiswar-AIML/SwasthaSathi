@@ -7,7 +7,10 @@
     "dev": "node dev-server.cjs",
     "build": "node build.cjs",
     "start": "node dev-server.cjs",
-    "test": "node --test test-smoke.cjs"
+    "test": "node --test test-smoke.cjs",
+    "cap:build": "node build.cjs && cap sync android",
+    "cap:sync": "cap sync android",
+    "cap:open": "cap open android"
   },
   "keywords": [
     "healthcare",
@@ -20,7 +23,9 @@
   "author": "SwasthaSathi Team",
   "license": "MIT",
   "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
     "@supabase/supabase-js": "^2.49.1"
-  },
-  "devDependencies": {}
+  }
 }

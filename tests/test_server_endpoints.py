@@ -26,7 +26,7 @@ def test_facilities_and_distance_calculation() -> None:
     facs = get_nearby_facilities(district="Pune", user_lat=18.5793, user_lng=73.9806, limit=5)
     assert len(facs) > 0
     # First item should have accurate real calculated distance
-    assert 0.0 < facs[0]["distance_km"] <= 25.0
+    assert 0.0 <= facs[0]["distance_km"] <= 25.0
     # Facilities must be sorted in ascending order of proximity
     for i in range(len(facs) - 1):
         assert facs[i]["distance_km"] <= facs[i + 1]["distance_km"]

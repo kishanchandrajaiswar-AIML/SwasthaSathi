@@ -30,12 +30,19 @@ export class ApiClient {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
+    const isEdgeFunction = endpoint.includes('/functions/v1/');
+    const defaultHeaders = {
+      'Content-Type': 'application/json',
+      ...(isEdgeFunction ? {
+        'apikey': Config.SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${Config.SUPABASE_ANON_KEY}`
+      } : {}),
+      ...headers,
+    };
+
     const config = {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-      },
+      headers: defaultHeaders,
       signal: controller.signal,
     };
 
